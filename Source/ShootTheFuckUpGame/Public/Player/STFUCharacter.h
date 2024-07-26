@@ -17,10 +17,13 @@ public:
     // Sets default values for this character's properties
     ASTFUCharacter();
 
+    // Functions
 protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
+    // Variables
+protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UCameraComponent* CameraComponent;
 
