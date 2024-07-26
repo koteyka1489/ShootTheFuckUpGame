@@ -13,4 +13,7 @@ UCLASS()
 class SHOOTTHEFUCKUPGAME_API ASTFUGameModeBase : public AGameModeBase
 {
     GENERATED_BODY()
+
+public:
+    ASTFUGameModeBase();
 };
