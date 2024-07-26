@@ -29,4 +29,16 @@ void ASTFUCharacter::Tick(float DeltaTime)
 void ASTFUCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
+    PlayerInputComponent->BindAxis("MoveForward", this, &ASTFUCharacter::MoveForward);
+    PlayerInputComponent->BindAxis("MoveRight", this, &ASTFUCharacter::MoveRight);
+}
+
+void ASTFUCharacter::MoveForward(float Amount)
+{
+    AddMovementInput(GetActorForwardVector(), Amount);
+}
+
+void ASTFUCharacter::MoveRight(float Amount)
+{
+    AddMovementInput(GetActorRightVector(), Amount);
 }
