@@ -2,6 +2,7 @@
 
 #include "Player/STFUCharacter.h"
 #include "Camera\CameraComponent.h"
+#include "GameFramework\SpringArmComponent.h"
 
 // Sets default values
 ASTFUCharacter::ASTFUCharacter()
@@ -9,8 +10,12 @@ ASTFUCharacter::ASTFUCharacter()
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
 
+    SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
+    SpringArmComponent->SetupAttachment(GetRootComponent());
+    SpringArmComponent->bUsePawnControlRotation = true;
+
     CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
-    CameraComponent->SetupAttachment(GetRootComponent());
+    CameraComponent->SetupAttachment(SpringArmComponent);
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +36,8 @@ void ASTFUCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     Super::SetupPlayerInputComponent(PlayerInputComponent);
     PlayerInputComponent->BindAxis("MoveForward", this, &ASTFUCharacter::MoveForward);
     PlayerInputComponent->BindAxis("MoveRight", this, &ASTFUCharacter::MoveRight);
+    PlayerInputComponent->BindAxis("LookUp", this, &ASTFUCharacter::AddControllerPitchInput);
+    PlayerInputComponent->BindAxis("LookRight", this, &ASTFUCharacter::AddControllerYawInput);
 }
 
 void ASTFUCharacter::MoveForward(float Amount)

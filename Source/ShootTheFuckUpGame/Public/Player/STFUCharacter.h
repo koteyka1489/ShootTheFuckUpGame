@@ -7,6 +7,7 @@
 #include "STFUCharacter.generated.h"
 
 class UCameraComponent;
+class USpringArmComponent;
 
 UCLASS()
 class SHOOTTHEFUCKUPGAME_API ASTFUCharacter : public ACharacter
@@ -24,6 +25,9 @@ protected:
 
     // Variables
 protected:
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    USpringArmComponent* SpringArmComponent;
+
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UCameraComponent* CameraComponent;
 
