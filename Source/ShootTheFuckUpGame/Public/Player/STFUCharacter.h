@@ -31,6 +31,8 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UCameraComponent* CameraComponent;
 
+    
+
 public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
@@ -38,7 +40,22 @@ public:
     // Called to bind functionality to input
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+    //Var
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+    bool IsRuning = false;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+    bool IsMoveForward = false;
+
+    UFUNCTION(BlueprintCallable, Category = "State")
+    bool GetIsRuning() const { return IsRuning; }
+    
+    UFUNCTION(BlueprintCallable, Category = "State")
+    bool GetIsMoveForward() const { return IsMoveForward; }
+
 private:
     void MoveForward(float Amount);
     void MoveRight(float Amount);
+    void RuningOn();
+    void RuningOff();
 };

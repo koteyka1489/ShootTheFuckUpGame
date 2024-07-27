@@ -3,6 +3,7 @@
 #include "Player/STFUCharacter.h"
 #include "Camera\CameraComponent.h"
 #include "GameFramework\SpringArmComponent.h"
+class UCharacterMovementComponent;
 
 // Sets default values
 ASTFUCharacter::ASTFUCharacter()
@@ -39,14 +40,34 @@ void ASTFUCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     PlayerInputComponent->BindAxis("LookUp", this, &ASTFUCharacter::AddControllerPitchInput);
     PlayerInputComponent->BindAxis("LookRight", this, &ASTFUCharacter::AddControllerYawInput);
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTFUCharacter::Jump);
+    PlayerInputComponent->BindAction("Runing", IE_Pressed, this, &ASTFUCharacter::RuningOn);
+    PlayerInputComponent->BindAction("Runing", IE_Released, this, &ASTFUCharacter::RuningOff);
 }
 
 void ASTFUCharacter::MoveForward(float Amount)
 {
     AddMovementInput(GetActorForwardVector(), Amount);
+    if (Amount > 0.f)
+    {
+        IsMoveForward = true;
+    }
+    else
+    {
+        IsMoveForward = false;
+    }
 }
 
 void ASTFUCharacter::MoveRight(float Amount)
 {
     AddMovementInput(GetActorRightVector(), Amount);
+}
+
+void ASTFUCharacter::RuningOn()
+{
+    IsRuning = true;
+}
+
+void ASTFUCharacter::RuningOff()
+{
+    IsRuning = false;
 }
