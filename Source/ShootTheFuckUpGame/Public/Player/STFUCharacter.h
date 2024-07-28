@@ -41,6 +41,12 @@ public:
     UFUNCTION(BlueprintCallable, Category = "State")
     bool GetIsRuningAndMoveForward() const { return IsRuning && IsMoveForward; }
 
+    UFUNCTION(BlueprintCallable, Category = "State")
+    float GetDotProductForwardVecAndVelocityVec() const;
+
+    UFUNCTION(BlueprintCallable, Category = "State")
+    float GetDotProductRightVecAndVelocityVec() const;
+
 private:
     bool IsRuning      = false;
     bool IsMoveForward = false;

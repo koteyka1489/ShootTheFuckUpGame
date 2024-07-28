@@ -46,6 +46,20 @@ void ASTFUCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     PlayerInputComponent->BindAction("Runing", IE_Released, this, &ASTFUCharacter::RuningOff);
 }
 
+float ASTFUCharacter::GetDotProductForwardVecAndVelocityVec() const
+{
+    const FVector ForwardVec = GetActorForwardVector();
+    const FVector VelocityVec = GetVelocity().GetSafeNormal();
+    return FVector::DotProduct(ForwardVec, VelocityVec);
+}
+
+float ASTFUCharacter::GetDotProductRightVecAndVelocityVec() const
+{
+    const FVector RightVec  = GetActorRightVector();
+    const FVector VelocityVec = GetVelocity().GetSafeNormal();
+    return FVector::DotProduct(RightVec, VelocityVec);
+}
+
 void ASTFUCharacter::MoveForward(float Amount)
 {
     IsMoveForward = Amount > 0.f;
