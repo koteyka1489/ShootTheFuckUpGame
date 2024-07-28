@@ -16,7 +16,7 @@ class SHOOTTHEFUCKUPGAME_API ASTFUCharacter : public ACharacter
 
 public:
     // Sets default values for this character's properties
-    ASTFUCharacter();
+    ASTFUCharacter(const FObjectInitializer& Objinit);
 
     // Functions
 protected:
@@ -31,8 +31,6 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UCameraComponent* CameraComponent;
 
-    
-
 public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
@@ -40,20 +38,13 @@ public:
     // Called to bind functionality to input
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-    //Var
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
-    bool IsRuning = false;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
-    bool IsMoveForward = false;
-
     UFUNCTION(BlueprintCallable, Category = "State")
-    bool GetIsRuning() const { return IsRuning; }
-    
-    UFUNCTION(BlueprintCallable, Category = "State")
-    bool GetIsMoveForward() const { return IsMoveForward; }
+    bool GetIsRuningAndMoveForward() const { return IsRuning && IsMoveForward; }
 
 private:
+    bool IsRuning      = false;
+    bool IsMoveForward = false;
+
     void MoveForward(float Amount);
     void MoveRight(float Amount);
     void RuningOn();

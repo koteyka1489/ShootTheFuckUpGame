@@ -3,11 +3,13 @@
 #include "Player/STFUCharacter.h"
 #include "Camera\CameraComponent.h"
 #include "GameFramework\SpringArmComponent.h"
-class UCharacterMovementComponent;
+#include "Components\STFUCharacterMovementComponent.h"
 
 // Sets default values
-ASTFUCharacter::ASTFUCharacter()
+ASTFUCharacter::ASTFUCharacter(const FObjectInitializer& ObjInit)
+    : Super(ObjInit.SetDefaultSubobjectClass<USTFUCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
+
     // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
 
@@ -46,15 +48,8 @@ void ASTFUCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void ASTFUCharacter::MoveForward(float Amount)
 {
+    IsMoveForward = Amount > 0.f;
     AddMovementInput(GetActorForwardVector(), Amount);
-    if (Amount > 0.f)
-    {
-        IsMoveForward = true;
-    }
-    else
-    {
-        IsMoveForward = false;
-    }
 }
 
 void ASTFUCharacter::MoveRight(float Amount)
