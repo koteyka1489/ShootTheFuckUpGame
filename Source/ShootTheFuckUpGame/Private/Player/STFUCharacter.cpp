@@ -6,8 +6,11 @@
 #include "Components\STFUCharacterMovementComponent.h"
 #include "Components\STFUHealthComponent.h"
 #include "Components\TextRenderComponent.h"
+#include "Engine/DamageEvents.h"
 
-// Sets default values
+
+DEFINE_LOG_CATEGORY_STATIC(BaseCharacterLog, All, All)
+
 ASTFUCharacter::ASTFUCharacter(const FObjectInitializer& ObjInit)
     : Super(ObjInit.SetDefaultSubobjectClass<USTFUCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
@@ -36,6 +39,8 @@ void ASTFUCharacter::BeginPlay()
     check(CameraComponent);
     check(HealthComponent);
     check(TextHealthComponent);
+
+    
 }
 
 // Called every frame
@@ -45,6 +50,8 @@ void ASTFUCharacter::Tick(float DeltaTime)
 
     const float Health = HealthComponent->GetHealth();
     TextHealthComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
+    
+    TakeDamage(0.1f, FDamageEvent{}, Controller, this);
 
 }
 
@@ -95,3 +102,4 @@ void ASTFUCharacter::RuningOff()
 {
     IsRuning = false;
 }
+

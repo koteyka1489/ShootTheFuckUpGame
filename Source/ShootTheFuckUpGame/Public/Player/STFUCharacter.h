@@ -11,6 +11,7 @@ class USpringArmComponent;
 class USTFUHealthComponent;
 class UTextRenderComponent;
 
+
 UCLASS()
 class SHOOTTHEFUCKUPGAME_API ASTFUCharacter : public ACharacter
 {
@@ -57,4 +58,6 @@ private:
     void MoveRight(float Amount);
     void RuningOn();
     void RuningOff();
+
+
 };
