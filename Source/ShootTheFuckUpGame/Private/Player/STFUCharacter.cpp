@@ -4,6 +4,8 @@
 #include "Camera\CameraComponent.h"
 #include "GameFramework\SpringArmComponent.h"
 #include "Components\STFUCharacterMovementComponent.h"
+#include "Components\STFUHealthComponent.h"
+#include "Components\TextRenderComponent.h"
 
 // Sets default values
 ASTFUCharacter::ASTFUCharacter(const FObjectInitializer& ObjInit)
@@ -19,18 +21,31 @@ ASTFUCharacter::ASTFUCharacter(const FObjectInitializer& ObjInit)
 
     CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
     CameraComponent->SetupAttachment(SpringArmComponent);
+
+    HealthComponent = CreateDefaultSubobject<USTFUHealthComponent>("HealthComponent");
+
+    TextHealthComponent = CreateDefaultSubobject<UTextRenderComponent>("TextHealthComponent");
+    TextHealthComponent->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
 void ASTFUCharacter::BeginPlay()
 {
     Super::BeginPlay();
+    check(SpringArmComponent);
+    check(CameraComponent);
+    check(HealthComponent);
+    check(TextHealthComponent);
 }
 
 // Called every frame
 void ASTFUCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+    const float Health = HealthComponent->GetHealth();
+    TextHealthComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
+
 }
 
 // Called to bind functionality to input
@@ -48,14 +63,14 @@ void ASTFUCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 float ASTFUCharacter::GetDotProductForwardVecAndVelocityVec() const
 {
-    const FVector ForwardVec = GetActorForwardVector();
+    const FVector ForwardVec  = GetActorForwardVector();
     const FVector VelocityVec = GetVelocity().GetSafeNormal();
     return FVector::DotProduct(ForwardVec, VelocityVec);
 }
 
 float ASTFUCharacter::GetDotProductRightVecAndVelocityVec() const
 {
-    const FVector RightVec  = GetActorRightVector();
+    const FVector RightVec    = GetActorRightVector();
     const FVector VelocityVec = GetVelocity().GetSafeNormal();
     return FVector::DotProduct(RightVec, VelocityVec);
 }

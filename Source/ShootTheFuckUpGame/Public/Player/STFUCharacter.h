@@ -8,6 +8,8 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class USTFUHealthComponent;
+class UTextRenderComponent;
 
 UCLASS()
 class SHOOTTHEFUCKUPGAME_API ASTFUCharacter : public ACharacter
@@ -15,15 +17,11 @@ class SHOOTTHEFUCKUPGAME_API ASTFUCharacter : public ACharacter
     GENERATED_BODY()
 
 public:
-    // Sets default values for this character's properties
     ASTFUCharacter(const FObjectInitializer& Objinit);
 
-    // Functions
 protected:
-    // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
-    // Variables
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     USpringArmComponent* SpringArmComponent;
@@ -31,11 +29,15 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UCameraComponent* CameraComponent;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    USTFUHealthComponent* HealthComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    UTextRenderComponent* TextHealthComponent;
+
 public:
-    // Called every frame
     virtual void Tick(float DeltaTime) override;
 
-    // Called to bind functionality to input
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
     UFUNCTION(BlueprintCallable, Category = "State")
