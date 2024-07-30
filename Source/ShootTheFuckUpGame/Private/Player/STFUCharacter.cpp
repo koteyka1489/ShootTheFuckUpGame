@@ -8,7 +8,6 @@
 #include "Components\TextRenderComponent.h"
 #include "Engine/DamageEvents.h"
 
-
 DEFINE_LOG_CATEGORY_STATIC(BaseCharacterLog, All, All)
 
 ASTFUCharacter::ASTFUCharacter(const FObjectInitializer& ObjInit)
@@ -39,8 +38,6 @@ void ASTFUCharacter::BeginPlay()
     check(CameraComponent);
     check(HealthComponent);
     check(TextHealthComponent);
-
-    
 }
 
 // Called every frame
@@ -50,9 +47,6 @@ void ASTFUCharacter::Tick(float DeltaTime)
 
     const float Health = HealthComponent->GetHealth();
     TextHealthComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
-    
-    TakeDamage(0.1f, FDamageEvent{}, Controller, this);
-
 }
 
 // Called to bind functionality to input
@@ -102,4 +96,3 @@ void ASTFUCharacter::RuningOff()
 {
     IsRuning = false;
 }
-
