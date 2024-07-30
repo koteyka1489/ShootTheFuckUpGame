@@ -29,6 +29,9 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DEV")
     bool DoFullDamage = false;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DEV")
+    TSubclassOf<UDamageType> DamageType;
+
 protected:
     virtual void BeginPlay() override;
 

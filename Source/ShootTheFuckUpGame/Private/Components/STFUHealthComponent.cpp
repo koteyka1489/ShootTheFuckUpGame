@@ -2,8 +2,11 @@
 
 #include "Components/STFUHealthComponent.h"
 #include "GameFramework/Actor.h"
+#include "Dev\STFUFireDamageType.h"
+#include "Dev\STFUIceDamageType.h"
 
-// Sets default values for this component's properties
+DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All)
+
 USTFUHealthComponent::USTFUHealthComponent()
 {
     PrimaryComponentTick.bCanEverTick = false;
@@ -23,4 +26,17 @@ void USTFUHealthComponent::OnTakeAnyDamage(
     AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
     Health -= Damage;
+    UE_LOG(LogHealthComponent, Display, TEXT("Damage - %f"), Damage)
+
+    if (DamageType)
+    {
+        if (DamageType->IsA<USTFUFireDamageType>())
+        {
+            UE_LOG(LogHealthComponent, Display, TEXT("DamageType Fire"))
+        }
+        if (DamageType->IsA<USTFUIceDamageType>())
+        {
+            UE_LOG(LogHealthComponent, Display, TEXT("DamageType Ice"))
+        }
+    }
 }
