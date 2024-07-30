@@ -11,7 +11,6 @@ class USpringArmComponent;
 class USTFUHealthComponent;
 class UTextRenderComponent;
 
-
 UCLASS()
 class SHOOTTHEFUCKUPGAME_API ASTFUCharacter : public ACharacter
 {
@@ -36,6 +35,9 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UTextRenderComponent* TextHealthComponent;
 
+    UPROPERTY(EditDefaultsOnly, Category = "Animation")
+    UAnimMontage* DeathAnimMontage;
+
 public:
     virtual void Tick(float DeltaTime) override;
 
@@ -59,5 +61,6 @@ private:
     void RuningOn();
     void RuningOff();
 
-
+    void OnDeath();
+    void OnHealtChange(float Health);
 };
