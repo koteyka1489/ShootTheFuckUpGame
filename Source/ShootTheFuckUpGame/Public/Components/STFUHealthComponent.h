@@ -9,14 +9,15 @@
 DECLARE_MULTICAST_DELEGATE(FOnDeath)
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float)
 
-
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class SHOOTTHEFUCKUPGAME_API USTFUHealthComponent : public UActorComponent
+    UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent)) class SHOOTTHEFUCKUPGAME_API USTFUHealthComponent
+    : public UActorComponent
 {
     GENERATED_BODY()
 
 public:
     USTFUHealthComponent();
+
+    virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
     float GetHealth() const { return Health; }
 
@@ -27,13 +28,31 @@ public:
     FOnHealthChanged OnHealthChanged;
 
 protected:
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (ClampMin = "0.0", ClampMax = "1000.0"));
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (ClampMin = "0.0", ClampMax = "1000.0"));
     float MaxHealth = 100.0f;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal")
+    bool IsAutoHealEnabled = false;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal")
+    float AutoHealDelay = 1.0f;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal")
+    float AutoHealTick = 0.5f;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal")
+    float AutoHealValue = 1.0f;
 
     virtual void BeginPlay() override;
 
 private:
-    float Health = 0.0f;
+    float Health              = 0.0f;
+    float AutoHealEnebleTimer = 0.0f;
+    float AutoHealTickTimer   = 0.0f;
+    bool IsTakeDamage         = false;
+    bool OnAutoHeal           = false;
+
+    void AutoHeal();
 
     UFUNCTION()
     void OnTakeAnyDamage(
