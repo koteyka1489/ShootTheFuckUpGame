@@ -7,6 +7,7 @@
 #include "Components\STFUHealthComponent.h"
 #include "Components\TextRenderComponent.h"
 #include "Engine/DamageEvents.h"
+#include "GameFramework/Controller.h"
 
 DEFINE_LOG_CATEGORY_STATIC(BaseCharacterLog, All, All)
 
@@ -102,10 +103,13 @@ void ASTFUCharacter::OnDeath()
     UE_LOG(BaseCharacterLog, Display, TEXT("Character is Death %s"), *GetName());
 
     PlayAnimMontage(DeathAnimMontage);
-
     GetCharacterMovement()->DisableMovement();
-
     SetLifeSpan(5.0f);
+    if (Controller)
+    {
+        Controller->ChangeState(NAME_Spectating);
+    }
+
 }
 
 void ASTFUCharacter::OnHealtChange(float Health)
