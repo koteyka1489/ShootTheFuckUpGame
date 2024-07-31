@@ -13,7 +13,22 @@ USTFUHealthComponent::USTFUHealthComponent()
 void USTFUHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+    AutoHealHandle(DeltaTime);
+}
 
+void USTFUHealthComponent::BeginPlay()
+{
+    Super::BeginPlay();
+    SetHealth(MaxHealth);
+    OnHealthChanged.Broadcast(Health);
+
+    AActor* ComponentOwner = GetOwner();
+
+    ComponentOwner->OnTakeAnyDamage.AddDynamic(this, &USTFUHealthComponent::OnTakeAnyDamage);
+}
+
+void USTFUHealthComponent::AutoHealHandle(float DeltaTime)
+{
     if (IsAutoHealEnabled)
     {
         if (IsTakeDamage)
@@ -33,28 +48,17 @@ void USTFUHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
             if (AutoHealTickTimer >= AutoHealTick)
             {
                 AutoHealTickTimer = 0.0f;
-                AutoHeal();
+                AutoHealOn();
             }
         }
     }
 }
 
-void USTFUHealthComponent::BeginPlay()
-{
-    Super::BeginPlay();
-    Health = MaxHealth;
-    OnHealthChanged.Broadcast(Health);
-
-    AActor* ComponentOwner = GetOwner();
-
-    ComponentOwner->OnTakeAnyDamage.AddDynamic(this, &USTFUHealthComponent::OnTakeAnyDamage);
-}
-
-void USTFUHealthComponent::AutoHeal()
+void USTFUHealthComponent::AutoHealOn()
 {
     if (Health < MaxHealth)
     {
-        Health = FMath::Clamp(Health + AutoHealValue, 0.f, MaxHealth);
+        SetHealth(Health + AutoHealValue);
         OnHealthChanged.Broadcast(Health);
     }
     else
@@ -63,15 +67,19 @@ void USTFUHealthComponent::AutoHeal()
     }
 }
 
+void USTFUHealthComponent::SetHealth(float Value)
+{
+    Health = FMath::Clamp(Value, 0.f, MaxHealth);
+}
+
 void USTFUHealthComponent::OnTakeAnyDamage(
     AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
     if (Health <= 0.0f || IsDead()) return;
 
-    Health       = FMath::Clamp(Health - Damage, 0.f, MaxHealth);
+    SetHealth(Health - Damage);
     OnHealthChanged.Broadcast(Health);
     IsTakeDamage = true;
-    
 
     if (IsDead())
     {

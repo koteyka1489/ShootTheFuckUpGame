@@ -52,7 +52,9 @@ private:
     bool IsTakeDamage         = false;
     bool OnAutoHeal           = false;
 
-    void AutoHeal();
+    void AutoHealHandle(float DeltaTime);
+    void AutoHealOn();
+    void SetHealth(float Value);
 
     UFUNCTION()
     void OnTakeAnyDamage(
