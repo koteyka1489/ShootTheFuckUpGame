@@ -34,13 +34,13 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal")
     bool IsAutoHealEnabled = false;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (EditCondition = "IsAutoHealEnabled"))
     float AutoHealDelay = 1.0f;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (EditCondition = "IsAutoHealEnabled"))
     float AutoHealTick = 0.5f;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (EditCondition = "IsAutoHealEnabled"))
     float AutoHealValue = 1.0f;
 
     virtual void BeginPlay() override;

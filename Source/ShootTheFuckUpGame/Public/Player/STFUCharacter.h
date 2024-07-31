@@ -38,6 +38,12 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Animation")
     UAnimMontage* DeathAnimMontage;
 
+    UPROPERTY(EditDefaultsOnly, Category = "Movement")
+    FVector2D FallDamageVelocityMinMax = {900.0f, 1200.0f};
+
+    UPROPERTY(EditDefaultsOnly, Category = "Movement")
+    FVector2D FallDamageMinMax = {10.0f, 100.0f};
+
 public:
     virtual void Tick(float DeltaTime) override;
 
@@ -63,4 +69,7 @@ private:
 
     void OnDeath();
     void OnHealtChange(float Health);
+
+    UFUNCTION()
+    void OnGroundLanded(const FHitResult& Hit);
 };
