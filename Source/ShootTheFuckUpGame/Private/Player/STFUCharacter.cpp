@@ -8,6 +8,7 @@
 #include "Components\TextRenderComponent.h"
 #include "Engine/DamageEvents.h"
 #include "GameFramework/Controller.h"
+#include "Weapon/STFUBaseWeapon.h"
 
 DEFINE_LOG_CATEGORY_STATIC(BaseCharacterLog, All, All)
 
@@ -44,6 +45,7 @@ void ASTFUCharacter::BeginPlay()
     HealthComponent->OnHealthChanged.AddUObject(this, &ASTFUCharacter::OnHealtChange);
     LandedDelegate.AddDynamic(this, &ASTFUCharacter::OnGroundLanded);
 
+    SpawnWeapon();
 }
 
 // Called every frame
@@ -129,5 +131,18 @@ void ASTFUCharacter::OnGroundLanded(const FHitResult& Hit)
     const auto FinalDamage = FMath::GetMappedRangeValueClamped(FallDamageVelocityMinMax, FallDamageMinMax, LandingVelocity);
     UE_LOG(BaseCharacterLog, Display, TEXT("Damage %f"), FinalDamage);
     TakeDamage(FinalDamage, {}, nullptr, nullptr);
+
+}
+
+void ASTFUCharacter::SpawnWeapon()
+{
+    if (!GetWorld()) return;
+
+    const auto Weapon = GetWorld()->SpawnActor<ASTFUBaseWeapon>(WeaponClass);
+    if (Weapon)
+    {
+        FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
+        Weapon->AttachToComponent(GetMesh(), AttachmentRules, "WeaponSocket");
+    }
 
 }
