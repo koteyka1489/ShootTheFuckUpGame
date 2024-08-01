@@ -12,6 +12,15 @@ public class ShootTheFuckUpGame : ModuleRules
 
         PrivateDependencyModuleNames.AddRange(new string[] { });
 
+        PublicIncludePaths.AddRange(new string[]
+        {
+            "ShootTheFuckUpGame/Public/Components",
+            "ShootTheFuckUpGame/Public/Dev",
+            "ShootTheFuckUpGame/Public/Player",
+            "ShootTheFuckUpGame/Public/UI",
+            "ShootTheFuckUpGame/Public/Weapon"
+        });
+
         // Uncomment if you are using Slate UI
         // PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 
