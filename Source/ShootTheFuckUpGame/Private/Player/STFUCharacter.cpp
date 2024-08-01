@@ -8,7 +8,7 @@
 #include "Components\TextRenderComponent.h"
 #include "Engine/DamageEvents.h"
 #include "GameFramework/Controller.h"
-#include "Weapon/STFUBaseWeapon.h"
+#include "Components/STFUWeaponComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(BaseCharacterLog, All, All)
 
@@ -20,6 +20,7 @@ ASTFUCharacter::ASTFUCharacter(const FObjectInitializer& ObjInit)
     SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
     SpringArmComponent->SetupAttachment(GetRootComponent());
     SpringArmComponent->bUsePawnControlRotation = true;
+    SpringArmComponent->SocketOffset            = FVector(0.f, 100.0f, 80.0f);
 
     CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
     CameraComponent->SetupAttachment(SpringArmComponent);
@@ -28,6 +29,10 @@ ASTFUCharacter::ASTFUCharacter(const FObjectInitializer& ObjInit)
 
     TextHealthComponent = CreateDefaultSubobject<UTextRenderComponent>("TextHealthComponent");
     TextHealthComponent->SetupAttachment(GetRootComponent());
+    TextHealthComponent->bOwnerNoSee = true;
+
+    WeaponComponent = CreateDefaultSubobject<USTFUWeaponComponent>("WeaponComponent");
+
 }
 
 // Called when the game starts or when spawned
@@ -39,13 +44,12 @@ void ASTFUCharacter::BeginPlay()
     check(HealthComponent);
     check(TextHealthComponent);
     check(GetCharacterMovement());
+    check(WeaponComponent);
 
     OnHealtChange(HealthComponent->GetHealth());
     HealthComponent->OnDeath.AddUObject(this, &ASTFUCharacter::OnDeath);
     HealthComponent->OnHealthChanged.AddUObject(this, &ASTFUCharacter::OnHealtChange);
     LandedDelegate.AddDynamic(this, &ASTFUCharacter::OnGroundLanded);
-
-    SpawnWeapon();
 }
 
 // Called every frame
@@ -65,6 +69,7 @@ void ASTFUCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTFUCharacter::Jump);
     PlayerInputComponent->BindAction("Runing", IE_Pressed, this, &ASTFUCharacter::RuningOn);
     PlayerInputComponent->BindAction("Runing", IE_Released, this, &ASTFUCharacter::RuningOff);
+    PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTFUWeaponComponent::Fire);
 }
 
 float ASTFUCharacter::GetDotProductForwardVecAndVelocityVec() const
@@ -113,7 +118,6 @@ void ASTFUCharacter::OnDeath()
     {
         Controller->ChangeState(NAME_Spectating);
     }
-
 }
 
 void ASTFUCharacter::OnHealtChange(float Health)
@@ -121,7 +125,7 @@ void ASTFUCharacter::OnHealtChange(float Health)
     TextHealthComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
 }
 
-void ASTFUCharacter::OnGroundLanded(const FHitResult& Hit) 
+void ASTFUCharacter::OnGroundLanded(const FHitResult& Hit)
 {
     const float LandingVelocity = -GetCharacterMovement()->Velocity.Z;
     UE_LOG(BaseCharacterLog, Display, TEXT("Landing %f"), LandingVelocity);
@@ -131,18 +135,4 @@ void ASTFUCharacter::OnGroundLanded(const FHitResult& Hit)
     const auto FinalDamage = FMath::GetMappedRangeValueClamped(FallDamageVelocityMinMax, FallDamageMinMax, LandingVelocity);
     UE_LOG(BaseCharacterLog, Display, TEXT("Damage %f"), FinalDamage);
     TakeDamage(FinalDamage, {}, nullptr, nullptr);
-
-}
-
-void ASTFUCharacter::SpawnWeapon()
-{
-    if (!GetWorld()) return;
-
-    const auto Weapon = GetWorld()->SpawnActor<ASTFUBaseWeapon>(WeaponClass);
-    if (Weapon)
-    {
-        FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
-        Weapon->AttachToComponent(GetMesh(), AttachmentRules, "WeaponSocket");
-    }
-
 }

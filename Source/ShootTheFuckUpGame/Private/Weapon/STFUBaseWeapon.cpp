@@ -3,17 +3,24 @@
 
 #include "Weapon/STFUBaseWeapon.h"
 
-// Sets default values
+DEFINE_LOG_CATEGORY_STATIC(LogBaseWeapon, All, All);
+
+
 ASTFUBaseWeapon::ASTFUBaseWeapon()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 
 	PrimaryActorTick.bCanEverTick = false;
 
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMeshComponent");
     SetRootComponent(SkeletalMeshComponent);
 }
 
-// Called when the game starts or when spawned
+void ASTFUBaseWeapon::Fire() 
+{
+    UE_LOG(LogBaseWeapon, Display, TEXT("TRA TA TA TA"));
+}
+
+
 void ASTFUBaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();

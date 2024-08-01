@@ -10,7 +10,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class USTFUHealthComponent;
 class UTextRenderComponent;
-class ASTFUBaseWeapon;
+class USTFUWeaponComponent;
 
 UCLASS()
 class SHOOTTHEFUCKUPGAME_API ASTFUCharacter : public ACharacter
@@ -36,6 +36,9 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UTextRenderComponent* TextHealthComponent;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    USTFUWeaponComponent* WeaponComponent;
+
     UPROPERTY(EditDefaultsOnly, Category = "Animation")
     UAnimMontage* DeathAnimMontage;
 
@@ -44,10 +47,6 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, Category = "Movement")
     FVector2D FallDamageMinMax = {10.0f, 100.0f};
-
-    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-    TSubclassOf<ASTFUBaseWeapon> WeaponClass;
-
 
 public:
     virtual void Tick(float DeltaTime) override;
@@ -77,6 +76,4 @@ private:
 
     UFUNCTION()
     void OnGroundLanded(const FHitResult& Hit);
-
-    void SpawnWeapon();
 };
