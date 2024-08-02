@@ -14,12 +14,22 @@ class SHOOTTHEFUCKUPGAME_API ASTFUBaseWeapon : public AActor
 public:	
 	ASTFUBaseWeapon();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
     USkeletalMeshComponent* SkeletalMeshComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    FName MuzzleSocketName = "MuzzleSocket";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    float TraceMaxDistance = 1500.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    FColor LineColor = FColor::Red;
 
 	virtual void Fire();
 
 protected:
 	virtual void BeginPlay() override;
 
+	void MakeShot();
 };
