@@ -11,10 +11,16 @@ USTFUWeaponComponent::USTFUWeaponComponent()
     PrimaryComponentTick.bCanEverTick = false;
 }
 
-void USTFUWeaponComponent::Fire()
+void USTFUWeaponComponent::StartFire()
 {
     if (!CurentWeapon) return;
-    CurentWeapon->Fire();
+    CurentWeapon->StartFire();
+}
+
+void USTFUWeaponComponent::StopFire() 
+{
+    if (!CurentWeapon) return;
+    CurentWeapon->StopFire();
 }
 
 void USTFUWeaponComponent::BeginPlay()

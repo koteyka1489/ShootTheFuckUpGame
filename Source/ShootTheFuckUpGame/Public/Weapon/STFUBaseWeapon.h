@@ -29,7 +29,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
     float Damage = 10.f;
 
-	virtual void Fire();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+	float TimeBetwenShots = 0.1f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    float Recoil = 30.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    float RecoilStep = 30.0f;
+
+	virtual void StartFire();
+    virtual void StopFire();
 
 protected:
 	virtual void BeginPlay() override;
@@ -40,4 +50,7 @@ protected:
     void GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd);
     void GetHitResult(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd);
     FTransform GetSocketTranform();
+
+	private:
+    FTimerHandle TimerHandler;
 };

@@ -70,7 +70,8 @@ void ASTFUCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTFUCharacter::Jump);
     PlayerInputComponent->BindAction("Runing", IE_Pressed, this, &ASTFUCharacter::RuningOn);
     PlayerInputComponent->BindAction("Runing", IE_Released, this, &ASTFUCharacter::RuningOff);
-    PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTFUWeaponComponent::Fire);
+    PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTFUWeaponComponent::StartFire);
+    PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTFUWeaponComponent::StopFire);
 }
 
 float ASTFUCharacter::GetDotProductForwardVecAndVelocityVec() const

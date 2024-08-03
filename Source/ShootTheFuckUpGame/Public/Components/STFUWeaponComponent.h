@@ -16,16 +16,17 @@ class SHOOTTHEFUCKUPGAME_API USTFUWeaponComponent : public UActorComponent
 public:
     USTFUWeaponComponent();
 
-    void Fire();
-
-protected:
-    virtual void BeginPlay() override;
-
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
     TSubclassOf<ASTFUBaseWeapon> WeaponClass;
 
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
     FName WeaponAttachPointName = "WeaponSocket";
+
+    void StartFire();
+    void StopFire();
+
+protected:
+    virtual void BeginPlay() override;
 
 private:
     UPROPERTY()

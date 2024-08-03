@@ -26,18 +26,28 @@ void ASTFUBaseWeapon::BeginPlay()
     check(SkeletalMeshComponent);
 }
 
-void ASTFUBaseWeapon::Fire()
+void ASTFUBaseWeapon::StartFire()
 {
     MakeShot();
+
+    GetWorldTimerManager().SetTimer(TimerHandler, this, &ASTFUBaseWeapon::MakeShot, TimeBetwenShots, true);
+}
+
+void ASTFUBaseWeapon::StopFire() 
+{
+    GetWorldTimerManager().ClearTimer(TimerHandler);
+    Recoil = 0.5f;
 }
 
 void ASTFUBaseWeapon::MakeShot()
 {
     if (!GetWorld()) return;
-
+  
     FVector TraceStart;
     FVector TraceEnd;
     GetTraceStartAndEnd(TraceStart, TraceEnd);
+    TraceEnd.Z += Recoil;
+    Recoil += RecoilStep;
 
     FHitResult HitResult;
     GetHitResult(HitResult, TraceStart, TraceEnd);
