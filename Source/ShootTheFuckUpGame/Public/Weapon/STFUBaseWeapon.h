@@ -9,48 +9,52 @@
 UCLASS()
 class SHOOTTHEFUCKUPGAME_API ASTFUBaseWeapon : public AActor
 {
-	GENERATED_BODY()
-	
-public:	
-	ASTFUBaseWeapon();
+    GENERATED_BODY()
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
+public:
+    ASTFUBaseWeapon();
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
     USkeletalMeshComponent* SkeletalMeshComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     FName MuzzleSocketName = "MuzzleSocket";
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
     float TraceMaxDistance = 1500.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
     FColor LineColor = FColor::Red;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
     float Damage = 10.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
-	float TimeBetwenShots = 0.1f;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    float TimeBetwenShots = 0.1f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
     float Recoil = 30.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
     float RecoilStep = 30.0f;
 
-	virtual void StartFire();
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    float XRecoil = 40.0f;
+
+    virtual void StartFire();
     virtual void StopFire();
 
 protected:
-	virtual void BeginPlay() override;
+    virtual void BeginPlay() override;
 
-	void MakeShot();
+    void MakeShot();
     ACharacter* GetCharacter();
     APlayerController* GetController();
     void GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd);
     void GetHitResult(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd);
     FTransform GetSocketTranform();
 
-	private:
+private:
     FTimerHandle TimerHandler;
+    void RecoilHandler(FVector& TraceEnd);
 };

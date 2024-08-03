@@ -46,8 +46,8 @@ void ASTFUBaseWeapon::MakeShot()
     FVector TraceStart;
     FVector TraceEnd;
     GetTraceStartAndEnd(TraceStart, TraceEnd);
-    TraceEnd.Z += Recoil;
-    Recoil += RecoilStep;
+
+    RecoilHandler(TraceEnd);
 
     FHitResult HitResult;
     GetHitResult(HitResult, TraceStart, TraceEnd);
@@ -109,4 +109,12 @@ void ASTFUBaseWeapon::GetHitResult(FHitResult& HitResult, const FVector& TraceSt
 FTransform ASTFUBaseWeapon::GetSocketTranform()
 {
     return SkeletalMeshComponent->GetSocketTransform(MuzzleSocketName);
+}
+
+void ASTFUBaseWeapon::RecoilHandler(FVector& TraceEnd) 
+{
+    TraceEnd.Z += Recoil;
+    Recoil += RecoilStep;
+    float RecoilX = FMath::FRandRange(-XRecoil, XRecoil);
+    TraceEnd.X += RecoilX;
 }
