@@ -9,6 +9,7 @@
 #include "Engine/DamageEvents.h"
 #include "GameFramework/Controller.h"
 #include "Components/STFUWeaponComponent.h"
+#include "Components/CapsuleComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(BaseCharacterLog, All, All)
 
@@ -119,6 +120,7 @@ void ASTFUCharacter::OnDeath()
     {
         Controller->ChangeState(NAME_Spectating);
     }
+    GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 }
 
 void ASTFUCharacter::OnHealtChange(float Health)
