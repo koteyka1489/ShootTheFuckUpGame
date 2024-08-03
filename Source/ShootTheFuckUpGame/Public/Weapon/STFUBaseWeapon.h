@@ -26,6 +26,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
     FColor LineColor = FColor::Red;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    float Damage = 10.f;
+
 	virtual void Fire();
 
 protected:

@@ -19,6 +19,20 @@ class SHOOTTHEFUCKUPGAME_API ASTFUCharacter : public ACharacter
 
 public:
     ASTFUCharacter(const FObjectInitializer& Objinit);
+    
+    virtual void Tick(float DeltaTime) override;
+
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+    UFUNCTION(BlueprintCallable, Category = "State")
+    bool GetIsRuningAndMoveForward() const { return IsRuning && IsMoveForward; }
+
+    UFUNCTION(BlueprintCallable, Category = "State")
+    float GetDotProductForwardVecAndVelocityVec() const;
+
+    UFUNCTION(BlueprintCallable, Category = "State")
+    float GetDotProductRightVecAndVelocityVec() const;
+
 
 protected:
     virtual void BeginPlay() override;
@@ -47,20 +61,6 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, Category = "Movement")
     FVector2D FallDamageMinMax = {10.0f, 100.0f};
-
-public:
-    virtual void Tick(float DeltaTime) override;
-
-    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-    UFUNCTION(BlueprintCallable, Category = "State")
-    bool GetIsRuningAndMoveForward() const { return IsRuning && IsMoveForward; }
-
-    UFUNCTION(BlueprintCallable, Category = "State")
-    float GetDotProductForwardVecAndVelocityVec() const;
-
-    UFUNCTION(BlueprintCallable, Category = "State")
-    float GetDotProductRightVecAndVelocityVec() const;
 
 private:
     bool IsRuning      = false;

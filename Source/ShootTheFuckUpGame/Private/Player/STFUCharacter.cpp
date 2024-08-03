@@ -86,6 +86,7 @@ float ASTFUCharacter::GetDotProductRightVecAndVelocityVec() const
     return FVector::DotProduct(RightVec, VelocityVec);
 }
 
+
 void ASTFUCharacter::MoveForward(float Amount)
 {
     IsMoveForward = Amount > 0.f;

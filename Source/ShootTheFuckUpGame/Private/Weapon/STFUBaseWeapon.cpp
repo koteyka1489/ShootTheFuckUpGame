@@ -5,6 +5,8 @@
 #include "DrawDebugHelpers.h"
 #include "GameFramework\Character.h"
 #include "GameFramework\Controller.h"
+#include "Player\STFUCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseWeapon, All, All);
 
@@ -44,7 +46,7 @@ void ASTFUBaseWeapon::MakeShot()
     float DebugLineThickness = 1.0f;
     uint8 DepthPrioroty      = 0u;
     float SphereRadius       = 10.0f;
-    int32 SphereTesselation = 24;
+    int32 SphereTesselation  = 24;
 
     if (HitResult.bBlockingHit)
     {
@@ -52,6 +54,8 @@ void ASTFUBaseWeapon::MakeShot()
             DepthPrioroty, DebugLineThickness);
         DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, SphereRadius, SphereTesselation, FColor::Cyan, false, DebugLineLifeTime,
             DepthPrioroty, DebugLineThickness);
+
+        UGameplayStatics::ApplyPointDamage(HitResult.GetActor(), Damage, TraceStart, HitResult, nullptr, GetOwner(), nullptr);
     }
     else
     {
