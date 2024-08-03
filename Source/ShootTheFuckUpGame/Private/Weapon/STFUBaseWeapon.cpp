@@ -26,7 +26,6 @@ void ASTFUBaseWeapon::BeginPlay()
 
 void ASTFUBaseWeapon::Fire()
 {
-    UE_LOG(LogBaseWeapon, Display, TEXT("TRA TA TA TA"));
     MakeShot();
 }
 
@@ -34,38 +33,66 @@ void ASTFUBaseWeapon::MakeShot()
 {
     if (!GetWorld()) return;
 
-    const auto Player = Cast<ACharacter>(GetOwner());
-    if (!Player) return;
-
-    const auto Controller = Player->GetController<APlayerController>();
-    if (!Controller) return;
-
-    FVector ViewLocation;
-    FRotator ViewRotation;
-
-    Controller->GetPlayerViewPoint(ViewLocation, ViewRotation);
-
-    const FTransform SocketTransform = SkeletalMeshComponent->GetSocketTransform(MuzzleSocketName);
-
-    const FVector TraceStart = ViewLocation; //    SocketTransform.GetLocation();
-    const FVector ShootDirection = ViewRotation.Vector();  // SocketTransform.GetRotation().GetForwardVector();
-    const FVector TraceEnd       = TraceStart + ShootDirection * TraceMaxDistance;
-
-    
+    FVector TraceStart;
+    FVector TraceEnd;
+    GetTraceStartAndEnd(TraceStart, TraceEnd);
 
     FHitResult HitResult;
-    FCollisionQueryParams CollisionQueryParams;
-    CollisionQueryParams.AddIgnoredActor(GetOwner());
-    GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility, CollisionQueryParams);
+    GetHitResult(HitResult, TraceStart, TraceEnd);
+
+    float DebugLineLifeTime  = 1.0f;
+    float DebugLineThickness = 1.0f;
+    uint8 DepthPrioroty      = 0u;
+    float SphereRadius       = 10.0f;
+    int32 SphereTesselation = 24;
 
     if (HitResult.bBlockingHit)
     {
-        DrawDebugLine(GetWorld(), SocketTransform.GetLocation(), HitResult.ImpactPoint, LineColor, false, 3.0f, 0u, 3.0f);
-        DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.f, 24, FColor::Cyan, false, 1.0f, 0u, 1.0f);
-        UE_LOG(LogBaseWeapon, Display, TEXT("Bone - %s"), *HitResult.BoneName.ToString());
+        DrawDebugLine(GetWorld(), GetSocketTranform().GetLocation(), HitResult.ImpactPoint, LineColor, false, DebugLineLifeTime,
+            DepthPrioroty, DebugLineThickness);
+        DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, SphereRadius, SphereTesselation, FColor::Cyan, false, DebugLineLifeTime,
+            DepthPrioroty, DebugLineThickness);
     }
     else
     {
-        DrawDebugLine(GetWorld(), SocketTransform.GetLocation(), TraceEnd, LineColor, false, 3.0f, 0u, 3.0f);
+        DrawDebugLine(GetWorld(), GetSocketTranform().GetLocation(), TraceEnd, LineColor, false, DebugLineLifeTime, DepthPrioroty,
+            DebugLineThickness);
     }
+}
+
+ACharacter* ASTFUBaseWeapon::GetCharacter()
+{
+    const auto Player = Cast<ACharacter>(GetOwner());
+    if (!Player) return nullptr;
+    return Player;
+}
+
+APlayerController* ASTFUBaseWeapon::GetController()
+{
+    const auto Controller = GetCharacter()->GetController<APlayerController>();
+    if (!Controller) return nullptr;
+    return Controller;
+}
+
+void ASTFUBaseWeapon::GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd)
+{
+    FVector ViewLocation;
+    FRotator ViewRotation;
+    GetController()->GetPlayerViewPoint(ViewLocation, ViewRotation);
+
+    TraceStart                   = ViewLocation;
+    const FVector ShootDirection = ViewRotation.Vector();
+    TraceEnd                     = TraceStart + ShootDirection * TraceMaxDistance;
+}
+
+void ASTFUBaseWeapon::GetHitResult(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd)
+{
+    FCollisionQueryParams CollisionQueryParams;
+    CollisionQueryParams.AddIgnoredActor(GetOwner());
+    GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility, CollisionQueryParams);
+}
+
+FTransform ASTFUBaseWeapon::GetSocketTranform()
+{
+    return SkeletalMeshComponent->GetSocketTransform(MuzzleSocketName);
 }

@@ -32,4 +32,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	void MakeShot();
+    ACharacter* GetCharacter();
+    APlayerController* GetController();
+    void GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd);
+    void GetHitResult(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd);
+    FTransform GetSocketTranform();
 };
