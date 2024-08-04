@@ -47,14 +47,11 @@ public:
 protected:
     virtual void BeginPlay() override;
 
-    void MakeShot();
+    virtual void MakeShot();
     ACharacter* GetCharacter();
     APlayerController* GetController();
     void GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd);
     void GetHitResult(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd);
     FTransform GetSocketTranform();
 
-private:
-    FTimerHandle TimerHandler;
-    void RecoilHandler(FVector& TraceEnd);
 };

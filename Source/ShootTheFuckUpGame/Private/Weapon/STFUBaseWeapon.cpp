@@ -26,53 +26,11 @@ void ASTFUBaseWeapon::BeginPlay()
     check(SkeletalMeshComponent);
 }
 
-void ASTFUBaseWeapon::StartFire()
-{
-    MakeShot();
+void ASTFUBaseWeapon::StartFire() {}
 
-    GetWorldTimerManager().SetTimer(TimerHandler, this, &ASTFUBaseWeapon::MakeShot, TimeBetwenShots, true);
-}
+void ASTFUBaseWeapon::StopFire() {}
 
-void ASTFUBaseWeapon::StopFire() 
-{
-    GetWorldTimerManager().ClearTimer(TimerHandler);
-    Recoil = 0.5f;
-}
-
-void ASTFUBaseWeapon::MakeShot()
-{
-    if (!GetWorld()) return;
-  
-    FVector TraceStart;
-    FVector TraceEnd;
-    GetTraceStartAndEnd(TraceStart, TraceEnd);
-
-    RecoilHandler(TraceEnd);
-
-    FHitResult HitResult;
-    GetHitResult(HitResult, TraceStart, TraceEnd);
-
-    float DebugLineLifeTime  = 1.0f;
-    float DebugLineThickness = 1.0f;
-    uint8 DepthPrioroty      = 0u;
-    float SphereRadius       = 10.0f;
-    int32 SphereTesselation  = 24;
-
-    if (HitResult.bBlockingHit)
-    {
-        DrawDebugLine(GetWorld(), GetSocketTranform().GetLocation(), HitResult.ImpactPoint, LineColor, false, DebugLineLifeTime,
-            DepthPrioroty, DebugLineThickness);
-        DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, SphereRadius, SphereTesselation, FColor::Cyan, false, DebugLineLifeTime,
-            DepthPrioroty, DebugLineThickness);
-
-        UGameplayStatics::ApplyPointDamage(HitResult.GetActor(), Damage, TraceStart, HitResult, nullptr, GetOwner(), nullptr);
-    }
-    else
-    {
-        DrawDebugLine(GetWorld(), GetSocketTranform().GetLocation(), TraceEnd, LineColor, false, DebugLineLifeTime, DepthPrioroty,
-            DebugLineThickness);
-    }
-}
+void ASTFUBaseWeapon::MakeShot() {}
 
 ACharacter* ASTFUBaseWeapon::GetCharacter()
 {
@@ -111,10 +69,4 @@ FTransform ASTFUBaseWeapon::GetSocketTranform()
     return SkeletalMeshComponent->GetSocketTransform(MuzzleSocketName);
 }
 
-void ASTFUBaseWeapon::RecoilHandler(FVector& TraceEnd) 
-{
-    TraceEnd.Z += Recoil;
-    Recoil += RecoilStep;
-    float RecoilX = FMath::FRandRange(-XRecoil, XRecoil);
-    TraceEnd.X += RecoilX;
-}
+
