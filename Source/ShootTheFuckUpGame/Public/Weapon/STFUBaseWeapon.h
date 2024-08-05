@@ -35,5 +35,5 @@ protected:
     
     void GetHitResult(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd);
     FTransform GetSocketTranform();
-
+    FVector GetSocketWorldLocation();
 };

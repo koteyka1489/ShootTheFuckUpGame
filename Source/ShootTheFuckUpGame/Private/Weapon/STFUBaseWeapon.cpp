@@ -59,3 +59,8 @@ FTransform ASTFUBaseWeapon::GetSocketTranform()
 {
     return SkeletalMeshComponent->GetSocketTransform(MuzzleSocketName);
 }
+
+FVector ASTFUBaseWeapon::GetSocketWorldLocation()
+{
+    return GetSocketTranform().GetLocation();
+}
