@@ -13,17 +13,39 @@ UCLASS()
 class SHOOTTHEFUCKUPGAME_API ASTFURiffleWeapon : public ASTFUBaseWeapon
 {
     GENERATED_BODY()
+public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    float TraceMaxDistance = 1500.0f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    FColor LineColor = FColor::Red;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    float Damage = 10.f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    float TimeBetwenShots = 0.1f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    float Recoil = 30.0f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    float RecoilStep = 30.0f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    float XRecoil = 40.0f;
 
 public:
     ASTFURiffleWeapon();
     virtual void StartFire() override;
     virtual void StopFire() override;
 
-    protected:
+protected:
     virtual void MakeShot() override;
 
-    private:
+private:
     FTimerHandle TimerHandler;
-    void RecoilHandler(FVector& TraceEnd);
 
+    void RecoilHandler(FVector& TraceEnd);
+    virtual void GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd) override;
 };
