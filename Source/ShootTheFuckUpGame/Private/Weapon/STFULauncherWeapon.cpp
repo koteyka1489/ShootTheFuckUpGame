@@ -3,7 +3,8 @@
 
 #include "Weapon/STFULauncherWeapon.h"
 #include "Weapon\STFUProjectile.h"
-#include "Kismet\GameplayStatics.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogLauncher, All, All);
 
 
 void ASTFULauncherWeapon::StartFire() 
@@ -13,8 +14,24 @@ void ASTFULauncherWeapon::StartFire()
 
 void ASTFULauncherWeapon::MakeShot() 
 {
-    const FTransform SpawnTransform(FRotator::ZeroRotator, GetSocketWorldLocation());
-    auto Projectile = UGameplayStatics::BeginDeferredActorSpawnFromClass(GetWorld(), ProjectileClass, SpawnTransform);
+    if (!GetWorld()) return;
 
-    UGameplayStatics::FinishSpawningActor(Projectile, SpawnTransform);
+    FVector TraceStart;
+    FVector TraceEnd;
+    GetTraceStartAndEnd(TraceStart, TraceEnd);
+
+    FHitResult HitResult;
+    GetHitResult(HitResult, TraceStart, TraceEnd);
+
+    FVector EndPoint = HitResult.bBlockingHit ? HitResult.ImpactPoint : TraceEnd;
+    FVector Direction = (EndPoint - GetSocketWorldLocation().GetSafeNormal());
+
+    const FTransform SpawnTransform(FRotator::ZeroRotator, GetSocketWorldLocation());
+    ASTFUProjectile* Projectile = GetWorld()->SpawnActorDeferred<ASTFUProjectile>(ProjectileClass, SpawnTransform);
+    if (Projectile)
+    {
+
+       // Projectile->SetShotDirection(Direction);
+        Projectile->FinishSpawning(SpawnTransform);
+    }
 }

@@ -63,13 +63,4 @@ void ASTFURiffleWeapon::RecoilHandler(FVector& TraceEnd)
     TraceEnd.X += RecoilX;
 }
 
-void ASTFURiffleWeapon::GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd) 
-{
-    FVector ViewLocation;
-    FRotator ViewRotation;
-    GetController()->GetPlayerViewPoint(ViewLocation, ViewRotation);
 
-    TraceStart                   = ViewLocation;
-    const FVector ShootDirection = ViewRotation.Vector();
-    TraceEnd                     = TraceStart + ShootDirection * TraceMaxDistance;
-}
