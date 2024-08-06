@@ -32,6 +32,7 @@ void ASTFULauncherWeapon::MakeShot()
     {
 
         Projectile->SetShotDirection(Direction);
+        Projectile->SetOwner(GetOwner());
         Projectile->FinishSpawning(SpawnTransform);
     }
 }
