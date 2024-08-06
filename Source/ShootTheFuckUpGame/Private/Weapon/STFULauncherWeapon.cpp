@@ -24,14 +24,14 @@ void ASTFULauncherWeapon::MakeShot()
     GetHitResult(HitResult, TraceStart, TraceEnd);
 
     FVector EndPoint = HitResult.bBlockingHit ? HitResult.ImpactPoint : TraceEnd;
-    FVector Direction = (EndPoint - GetSocketWorldLocation().GetSafeNormal());
+    FVector Direction = (EndPoint - GetSocketWorldLocation());
 
     const FTransform SpawnTransform(FRotator::ZeroRotator, GetSocketWorldLocation());
     ASTFUProjectile* Projectile = GetWorld()->SpawnActorDeferred<ASTFUProjectile>(ProjectileClass, SpawnTransform);
     if (Projectile)
     {
 
-       // Projectile->SetShotDirection(Direction);
+        Projectile->SetShotDirection(Direction);
         Projectile->FinishSpawning(SpawnTransform);
     }
 }

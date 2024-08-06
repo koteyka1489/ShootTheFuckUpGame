@@ -20,12 +20,14 @@ public:
     UPROPERTY(VisibleDefaultsOnly, Category = "Weapon")
     USphereComponent* CollisionComponent;
 
-   // UPROPERTY(VisibleDefaultsOnly, Category = "Weapon")
-   // UProjectileMovementComponent* MovementComponent;
+    UPROPERTY(VisibleDefaultsOnly, Category = "Weapon")
+    UProjectileMovementComponent* MovementComponent;
 
-   // void SetShotDirection(FVector Direction) { ShotDirection = Direction; }
+    void SetShotDirection(const FVector Direction) { ShotDirection = Direction; }
 
 protected:
     virtual void BeginPlay() override;
-   // FVector ShotDirection;
+
+private:
+    FVector ShotDirection;
 };
