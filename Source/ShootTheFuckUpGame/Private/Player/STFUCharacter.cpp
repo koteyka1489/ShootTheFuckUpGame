@@ -72,6 +72,7 @@ void ASTFUCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     PlayerInputComponent->BindAction("Runing", IE_Released, this, &ASTFUCharacter::RuningOff);
     PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTFUWeaponComponent::StartFire);
     PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTFUWeaponComponent::StopFire);
+    PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComponent, &USTFUWeaponComponent::NextWeapon);
 }
 
 float ASTFUCharacter::GetDotProductForwardVecAndVelocityVec() const
@@ -116,6 +117,7 @@ void ASTFUCharacter::OnDeath()
 
     PlayAnimMontage(DeathAnimMontage);
     GetCharacterMovement()->DisableMovement();
+    WeaponComponent->StopFire();
     SetLifeSpan(5.0f);
     if (Controller)
     {

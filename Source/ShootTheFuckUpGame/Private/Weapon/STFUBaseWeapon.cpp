@@ -46,7 +46,16 @@ APlayerController* ASTFUBaseWeapon::GetController()
     return Controller;
 }
 
-void ASTFUBaseWeapon::GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd) {}
+void ASTFUBaseWeapon::GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd) 
+{
+    FVector ViewLocation;
+    FRotator ViewRotation;
+    GetController()->GetPlayerViewPoint(ViewLocation, ViewRotation);
+
+    TraceStart                   = ViewLocation;
+    const FVector ShootDirection = ViewRotation.Vector();
+    TraceEnd                     = TraceStart + ShootDirection * TraceMaxDistance;
+}
 
 void ASTFUBaseWeapon::GetHitResult(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd)
 {

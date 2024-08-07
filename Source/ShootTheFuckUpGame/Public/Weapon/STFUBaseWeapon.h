@@ -20,6 +20,8 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     FName MuzzleSocketName = "MuzzleSocket";
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    float TraceMaxDistance = 1500.0f;
 
 
     virtual void StartFire();

@@ -14,8 +14,7 @@ class SHOOTTHEFUCKUPGAME_API ASTFURiffleWeapon : public ASTFUBaseWeapon
 {
     GENERATED_BODY()
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
-    float TraceMaxDistance = 1500.0f;
+ 
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
     FColor LineColor = FColor::Red;
@@ -47,5 +46,5 @@ private:
     FTimerHandle TimerHandler;
 
     void RecoilHandler(FVector& TraceEnd);
-    virtual void GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd) override;
+ 
 };
