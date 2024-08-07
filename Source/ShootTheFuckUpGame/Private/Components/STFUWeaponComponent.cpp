@@ -89,9 +89,6 @@ void USTFUWeaponComponent::EquipWeapon(int32 WeaponIndex)
         AtachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponArmorySocketName);
     }
 
-
-
-
     CurrentWeapon = Weapons[WeaponIndex];
     AtachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponEqiupSocketName);
 }
