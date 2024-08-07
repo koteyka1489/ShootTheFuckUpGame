@@ -23,7 +23,7 @@ void USTFUWeaponComponent::StopFire()
     CurrentWeapon->StopFire();
 }
 
-void USTFUWeaponComponent::NextWeapon() 
+void USTFUWeaponComponent::NextWeapon()
 {
     CurrentWeaponIndex = (CurrentWeaponIndex + 1) % Weapons.Num();
     EquipWeapon(CurrentWeaponIndex);
@@ -37,7 +37,7 @@ void USTFUWeaponComponent::BeginPlay()
     EquipWeapon(CurrentWeaponIndex);
 }
 
-void USTFUWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason) 
+void USTFUWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
     CurrentWeapon = nullptr;
     for (auto Weapon : Weapons)
@@ -48,8 +48,6 @@ void USTFUWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
     Weapons.Empty();
     Super::EndPlay(EndPlayReason);
 }
-
-
 
 void USTFUWeaponComponent::SpawnWeapons()
 {
@@ -78,7 +76,7 @@ void USTFUWeaponComponent::AtachWeaponToSocket(ASTFUBaseWeapon* Weapon, USceneCo
     Weapon->AttachToComponent(SceneComponent, AttachmentRules, SocketName);
 }
 
-void USTFUWeaponComponent::EquipWeapon(int32 WeaponIndex) 
+void USTFUWeaponComponent::EquipWeapon(int32 WeaponIndex)
 {
     if (!GetWorld()) return;
 
