@@ -73,6 +73,7 @@ void ASTFUCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTFUWeaponComponent::StartFire);
     PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTFUWeaponComponent::StopFire);
     PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComponent, &USTFUWeaponComponent::NextWeapon);
+    PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &USTFUWeaponComponent::Reload);
 }
 
 float ASTFUCharacter::GetDotProductForwardVecAndVelocityVec() const

@@ -9,6 +9,19 @@
 
 class ASTFUBaseWeapon;
 
+USTRUCT(BlueprintType)
+struct FWeaponData
+{
+    GENERATED_USTRUCT_BODY()
+
+public:
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+    TSubclassOf<ASTFUBaseWeapon> WeaponClass;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+    UAnimMontage* ReloadAnimMontage;
+};
+
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SHOOTTHEFUCKUPGAME_API USTFUWeaponComponent : public UActorComponent
 {
@@ -18,7 +31,7 @@ public:
     USTFUWeaponComponent();
 
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-    TArray<TSubclassOf<ASTFUBaseWeapon>> WeaponClassess;
+    TArray<FWeaponData> WeaponData;
 
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
     FName WeaponEqiupSocketName = "WeaponSocket";
@@ -32,6 +45,7 @@ public:
     void StartFire();
     void StopFire();
     void NextWeapon();
+    void Reload();
 
 protected:
     virtual void BeginPlay() override;
@@ -41,8 +55,14 @@ private:
     UPROPERTY()
     ASTFUBaseWeapon* CurrentWeapon = nullptr;
 
+      UPROPERTY()
+    UAnimMontage* CurrentReloadAnimMontage = nullptr;
+
     UPROPERTY()
     TArray<ASTFUBaseWeapon*> Weapons;
+
+         UPROPERTY()
+    TArray<UAnimMontage*> ReloadAnimMontages;
 
     UPROPERTY()
     ACharacter* Character = nullptr;
@@ -60,5 +80,4 @@ private:
     void OnEquipFinished(USkeletalMeshComponent* MeshComp);
     bool CanFire();
     bool CanEquip();
-
 };

@@ -7,10 +7,8 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LOG_WEAPON_COMPOONENT, All, All);
 
-
 USTFUWeaponComponent::USTFUWeaponComponent()
 {
-
     PrimaryComponentTick.bCanEverTick = false;
 }
 
@@ -32,10 +30,15 @@ void USTFUWeaponComponent::NextWeapon()
     EquipWeapon(CurrentWeaponIndex);
 }
 
+void USTFUWeaponComponent::Reload() 
+{
+    PlayAnimMontage(CurrentReloadAnimMontage);
+}
+
 void USTFUWeaponComponent::BeginPlay()
 {
     Super::BeginPlay();
-    InitAnimation(); 
+    InitAnimation();
     Character = Cast<ACharacter>(GetOwner());
     SpawnWeapons();
     EquipWeapon(CurrentWeaponIndex);
@@ -57,16 +60,16 @@ void USTFUWeaponComponent::SpawnWeapons()
 {
     if (!GetWorld() || !Character) return;
 
-    for (auto WeaponClass : WeaponClassess)
+    for (auto& WData : WeaponData)
     {
-        auto Weapon = GetWorld()->SpawnActor<ASTFUBaseWeapon>(WeaponClass);
+        auto Weapon            = GetWorld()->SpawnActor<ASTFUBaseWeapon>(WData.WeaponClass);
+        auto ReloadAnimMontage = WData.ReloadAnimMontage;
         if (!Weapon) continue;
 
         Weapon->SetOwner(Character);
         Weapons.Add(Weapon);
-
+        ReloadAnimMontages.Add(ReloadAnimMontage);
         AtachWeaponToSocket(Weapon, Character->GetMesh(), WeaponArmorySocketName);
-        
     }
 }
 
@@ -89,16 +92,18 @@ void USTFUWeaponComponent::EquipWeapon(int32 WeaponIndex)
     }
     PlayAnimMontage(EquipAnimMonatage);
     EquipAnimationIsRun = true;
-    CurrentWeapon = Weapons[WeaponIndex];
+    CurrentWeapon       = Weapons[WeaponIndex];
+    CurrentReloadAnimMontage = ReloadAnimMontages[WeaponIndex];
+
     AtachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponEqiupSocketName);
 }
 
-void USTFUWeaponComponent::PlayAnimMontage(UAnimMontage* Animation) 
+void USTFUWeaponComponent::PlayAnimMontage(UAnimMontage* Animation)
 {
     Character->PlayAnimMontage(Animation);
 }
 
-void USTFUWeaponComponent::InitAnimation() 
+void USTFUWeaponComponent::InitAnimation()
 {
     if (!EquipAnimMonatage) return;
     const auto NotifyEvents = EquipAnimMonatage->Notifies;
@@ -120,7 +125,6 @@ void USTFUWeaponComponent::OnEquipFinished(USkeletalMeshComponent* MeshComp)
     {
         EquipAnimationIsRun = false;
     }
-    
 }
 
 bool USTFUWeaponComponent::CanFire()
