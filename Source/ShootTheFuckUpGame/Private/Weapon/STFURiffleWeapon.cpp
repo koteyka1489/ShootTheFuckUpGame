@@ -22,8 +22,11 @@ void ASTFURiffleWeapon::StopFire()
 
 void ASTFURiffleWeapon::MakeShot() 
 {
-    if (!GetWorld() || IsAmmoEmpty()) return;
-
+    if (!GetWorld() || IsAmmoEmpty())
+    {
+        StopFire();
+        return;
+    }
 
     FVector TraceStart;
     FVector TraceEnd;
