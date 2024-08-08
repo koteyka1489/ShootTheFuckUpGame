@@ -16,7 +16,7 @@ USTFUWeaponComponent::USTFUWeaponComponent()
 
 void USTFUWeaponComponent::StartFire()
 {
-    if (!CurrentWeapon) return;
+    if (!CurrentWeapon || !CanFire()) return;
     CurrentWeapon->StartFire();
 }
 
@@ -30,7 +30,6 @@ void USTFUWeaponComponent::NextWeapon()
 {
     CurrentWeaponIndex = (CurrentWeaponIndex + 1) % Weapons.Num();
     EquipWeapon(CurrentWeaponIndex);
-    PlayAnimMontage(EquipAnimMonatage);
 }
 
 void USTFUWeaponComponent::BeginPlay()
@@ -81,14 +80,15 @@ void USTFUWeaponComponent::AtachWeaponToSocket(ASTFUBaseWeapon* Weapon, USceneCo
 
 void USTFUWeaponComponent::EquipWeapon(int32 WeaponIndex)
 {
-    if (!GetWorld() || !Character) return;
+    if (!GetWorld() || !Character || !CanEquip()) return;
 
     if (CurrentWeapon)
     {
         CurrentWeapon->StopFire();
         AtachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponArmorySocketName);
     }
-
+    PlayAnimMontage(EquipAnimMonatage);
+    EquipAnimationIsRun = true;
     CurrentWeapon = Weapons[WeaponIndex];
     AtachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponEqiupSocketName);
 }
@@ -118,7 +118,17 @@ void USTFUWeaponComponent::OnEquipFinished(USkeletalMeshComponent* MeshComp)
 
     if (Character->GetMesh() == MeshComp)
     {
-        UE_LOG(LOG_WEAPON_COMPOONENT, Display, TEXT("EQUIP FINISHED"));
+        EquipAnimationIsRun = false;
     }
     
+}
+
+bool USTFUWeaponComponent::CanFire()
+{
+    return !EquipAnimationIsRun;
+}
+
+bool USTFUWeaponComponent::CanEquip()
+{
+    return !EquipAnimationIsRun;
 }

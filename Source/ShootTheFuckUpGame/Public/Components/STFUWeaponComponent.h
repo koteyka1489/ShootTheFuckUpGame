@@ -48,6 +48,7 @@ private:
     ACharacter* Character = nullptr;
 
     int32 CurrentWeaponIndex = 0.f;
+    bool EquipAnimationIsRun = false;
 
     void SpawnWeapons();
 
@@ -57,5 +58,7 @@ private:
 
     void InitAnimation();
     void OnEquipFinished(USkeletalMeshComponent* MeshComp);
+    bool CanFire();
+    bool CanEquip();
 
 };
