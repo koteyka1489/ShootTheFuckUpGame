@@ -14,7 +14,9 @@ void ASTFULauncherWeapon::StartFire()
 
 void ASTFULauncherWeapon::MakeShot() 
 {
-    if (!GetWorld()) return;
+    if (!GetWorld() || IsAmmoEmpty()) return;
+
+
 
     FVector TraceStart;
     FVector TraceEnd;
@@ -35,4 +37,5 @@ void ASTFULauncherWeapon::MakeShot()
         Projectile->SetOwner(GetOwner());
         Projectile->FinishSpawning(SpawnTransform);
     }
+    BulletsReduction();
 }

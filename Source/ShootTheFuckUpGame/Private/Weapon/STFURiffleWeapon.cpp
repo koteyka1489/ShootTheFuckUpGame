@@ -22,7 +22,8 @@ void ASTFURiffleWeapon::StopFire()
 
 void ASTFURiffleWeapon::MakeShot() 
 {
-    if (!GetWorld()) return;
+    if (!GetWorld() || IsAmmoEmpty()) return;
+
 
     FVector TraceStart;
     FVector TraceEnd;
@@ -53,6 +54,7 @@ void ASTFURiffleWeapon::MakeShot()
         DrawDebugLine(GetWorld(), GetSocketTranform().GetLocation(), TraceEnd, LineColor, false, DebugLineLifeTime, DepthPrioroty,
             DebugLineThickness);
     }
+    BulletsReduction();
 }
 
 void ASTFURiffleWeapon::RecoilHandler(FVector& TraceEnd) 

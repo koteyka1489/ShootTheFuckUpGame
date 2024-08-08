@@ -24,6 +24,8 @@ void ASTFUBaseWeapon::BeginPlay()
     Super::BeginPlay();
 
     check(SkeletalMeshComponent);
+
+    CurrentAmmo = DefaultAmmo;
 }
 
 void ASTFUBaseWeapon::StartFire() {}
@@ -46,7 +48,7 @@ APlayerController* ASTFUBaseWeapon::GetController()
     return Controller;
 }
 
-void ASTFUBaseWeapon::GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd) 
+void ASTFUBaseWeapon::GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd)
 {
     FVector ViewLocation;
     FRotator ViewRotation;
@@ -72,4 +74,39 @@ FTransform ASTFUBaseWeapon::GetSocketTranform()
 FVector ASTFUBaseWeapon::GetSocketWorldLocation()
 {
     return GetSocketTranform().GetLocation();
+}
+
+bool ASTFUBaseWeapon::IsBulletsEmpty()
+{
+    return CurrentAmmo.Bullets == 0;
+}
+
+bool ASTFUBaseWeapon::IsClipsEmpty()
+{
+    return CurrentAmmo.Clips == 0;
+}
+
+bool ASTFUBaseWeapon::IsAmmoEmpty()
+{
+    return IsBulletsEmpty() && IsClipsEmpty() && !CurrentAmmo.Infinite;
+}
+
+void ASTFUBaseWeapon::BulletsReduction()
+{
+    if (!IsBulletsEmpty())
+    {
+        CurrentAmmo.Bullets--;
+        UE_LOG(LogBaseWeapon, Display, TEXT("Bullets reduction - %i"), CurrentAmmo.Bullets);
+    }
+    else if (!IsClipsEmpty() || CurrentAmmo.Infinite)
+    {
+        Reloading();
+    }
+}
+
+void ASTFUBaseWeapon::Reloading()
+{
+    CurrentAmmo.Clips--;
+    CurrentAmmo.Bullets = DefaultAmmo.Bullets;
+    UE_LOG(LogBaseWeapon, Display, TEXT("Reloading - %i"), CurrentAmmo.Clips);
 }
