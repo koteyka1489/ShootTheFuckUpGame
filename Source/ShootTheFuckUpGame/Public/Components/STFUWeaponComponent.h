@@ -1,4 +1,5 @@
 // Shoot The Fuck Up Game. All Rights reserved!!!
+// Shoot The Fuck Up Game. All Rights reserved!!!
 
 #pragma once
 
@@ -25,6 +26,9 @@ public:
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
     FName WeaponArmorySocketName = "ArmorySocket";
 
+    UPROPERTY(EditDefaultsOnly, Category = "Animation")
+    UAnimMontage* EquipAnimMonatage;
+
     void StartFire();
     void StopFire();
     void NextWeapon();
@@ -40,10 +44,18 @@ private:
     UPROPERTY()
     TArray<ASTFUBaseWeapon*> Weapons;
 
+    UPROPERTY()
+    ACharacter* Character = nullptr;
+
     int32 CurrentWeaponIndex = 0.f;
 
     void SpawnWeapons();
 
     void AtachWeaponToSocket(ASTFUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName);
     void EquipWeapon(int32 WeaponIndex);
+    void PlayAnimMontage(UAnimMontage* Animation);
+
+    void InitAnimation();
+    void OnEquipFinished(USkeletalMeshComponent* MeshComp);
+
 };

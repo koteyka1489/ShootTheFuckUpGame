@@ -18,7 +18,8 @@ public class ShootTheFuckUpGame : ModuleRules
             "ShootTheFuckUpGame/Public/Dev",
             "ShootTheFuckUpGame/Public/Player",
             "ShootTheFuckUpGame/Public/UI",
-            "ShootTheFuckUpGame/Public/Weapon"
+            "ShootTheFuckUpGame/Public/Weapon",
+            "ShootTheFuckUpGame/Public/Animations"
         });
 
         // Uncomment if you are using Slate UI
