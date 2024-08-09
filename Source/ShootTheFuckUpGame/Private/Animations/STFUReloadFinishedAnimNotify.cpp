@@ -1,5 +1,5 @@
 // Shoot The Fuck Up Game. All Rights reserved!!!
 
 
-#include "Animations/STFUEquipFinishedAnimNotify.h"
+#include "Animations/STFUReloadFinishedAnimNotify.h"
 

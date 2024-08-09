@@ -55,20 +55,22 @@ private:
     UPROPERTY()
     ASTFUBaseWeapon* CurrentWeapon = nullptr;
 
-      UPROPERTY()
+    UPROPERTY()
     UAnimMontage* CurrentReloadAnimMontage = nullptr;
 
     UPROPERTY()
     TArray<ASTFUBaseWeapon*> Weapons;
 
-         UPROPERTY()
+    UPROPERTY()
     TArray<UAnimMontage*> ReloadAnimMontages;
 
     UPROPERTY()
     ACharacter* Character = nullptr;
 
     int32 CurrentWeaponIndex = 0.f;
-    bool EquipAnimationIsRun = false;
+
+    bool EquipAnimationIsRun  = false;
+    bool ReloadAnimationIsRun = false;
 
     void SpawnWeapons();
 
@@ -78,6 +80,8 @@ private:
 
     void InitAnimation();
     void OnEquipFinished(USkeletalMeshComponent* MeshComp);
-    bool CanFire();
-    bool CanEquip();
+    void OnReloadFinished(USkeletalMeshComponent* MeshComp);
+
+    bool CanDoAction();
+
 };

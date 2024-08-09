@@ -4,6 +4,7 @@
 #include "Weapon/STFUBaseWeapon.h"
 #include "GameFramework\Character.h"
 #include "Animations/STFUEquipFinishedAnimNotify.h"
+#include "Animations/STFUReloadFinishedAnimNotify.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LOG_WEAPON_COMPOONENT, All, All);
 
@@ -14,7 +15,7 @@ USTFUWeaponComponent::USTFUWeaponComponent()
 
 void USTFUWeaponComponent::StartFire()
 {
-    if (!CurrentWeapon || !CanFire()) return;
+    if (!CurrentWeapon || !CanDoAction()) return;
     CurrentWeapon->StartFire();
 }
 
@@ -24,24 +25,31 @@ void USTFUWeaponComponent::StopFire()
     CurrentWeapon->StopFire();
 }
 
+
 void USTFUWeaponComponent::NextWeapon()
 {
+    CurrentWeapon->StopFire();
     CurrentWeaponIndex = (CurrentWeaponIndex + 1) % Weapons.Num();
     EquipWeapon(CurrentWeaponIndex);
+    
 }
 
-void USTFUWeaponComponent::Reload() 
+void USTFUWeaponComponent::Reload()
 {
+    CurrentWeapon->StopFire();
     PlayAnimMontage(CurrentReloadAnimMontage);
+    ReloadAnimationIsRun = true;
+    
 }
 
 void USTFUWeaponComponent::BeginPlay()
 {
     Super::BeginPlay();
-    InitAnimation();
+    
     Character = Cast<ACharacter>(GetOwner());
     SpawnWeapons();
     EquipWeapon(CurrentWeaponIndex);
+    InitAnimation();
 }
 
 void USTFUWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -83,7 +91,7 @@ void USTFUWeaponComponent::AtachWeaponToSocket(ASTFUBaseWeapon* Weapon, USceneCo
 
 void USTFUWeaponComponent::EquipWeapon(int32 WeaponIndex)
 {
-    if (!GetWorld() || !Character || !CanEquip()) return;
+    if (!GetWorld() || !Character || !CanDoAction()) return;
 
     if (CurrentWeapon)
     {
@@ -91,8 +99,8 @@ void USTFUWeaponComponent::EquipWeapon(int32 WeaponIndex)
         AtachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponArmorySocketName);
     }
     PlayAnimMontage(EquipAnimMonatage);
-    EquipAnimationIsRun = true;
-    CurrentWeapon       = Weapons[WeaponIndex];
+    EquipAnimationIsRun      = true;
+    CurrentWeapon            = Weapons[WeaponIndex];
     CurrentReloadAnimMontage = ReloadAnimMontages[WeaponIndex];
 
     AtachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponEqiupSocketName);
@@ -106,33 +114,54 @@ void USTFUWeaponComponent::PlayAnimMontage(UAnimMontage* Animation)
 void USTFUWeaponComponent::InitAnimation()
 {
     if (!EquipAnimMonatage) return;
-    const auto NotifyEvents = EquipAnimMonatage->Notifies;
-    for (auto NotifyEvent : NotifyEvents)
+    const auto EquipNotifyEvents = EquipAnimMonatage->Notifies;
+    for (auto NotifyEvent : EquipNotifyEvents)
     {
         auto EquipFinishedNotify = Cast<USTFUEquipFinishedAnimNotify>(NotifyEvent.Notify);
         if (EquipFinishedNotify)
         {
             EquipFinishedNotify->OnNotifide.AddUObject(this, &USTFUWeaponComponent::OnEquipFinished);
-            break;
+            UE_LOG(LOG_WEAPON_COMPOONENT, Display, TEXT("BIND EquipFinished"));
         }
     }
+
+    if (!CurrentReloadAnimMontage) return;
+
+    for (auto ReloadAnimMontage : ReloadAnimMontages)
+    {
+        const auto ReloadNotifyEvents = ReloadAnimMontage->Notifies;
+        for (auto ReloadNotifyEvent : ReloadNotifyEvents)
+        {
+            auto ReloadFinishedNotify = Cast<USTFUReloadFinishedAnimNotify>(ReloadNotifyEvent.Notify);
+            if (ReloadFinishedNotify)
+            {
+                ReloadFinishedNotify->OnNotifide.AddUObject(this, &USTFUWeaponComponent::OnReloadFinished);
+                UE_LOG(LOG_WEAPON_COMPOONENT, Display, TEXT("BIND ReloadFinished"));
+            }
+        }
+    }
+    
 }
 
 void USTFUWeaponComponent::OnEquipFinished(USkeletalMeshComponent* MeshComp)
 {
-
     if (Character->GetMesh() == MeshComp)
     {
         EquipAnimationIsRun = false;
+        UE_LOG(LOG_WEAPON_COMPOONENT, Display, TEXT("OnEquipFinished"));
     }
 }
 
-bool USTFUWeaponComponent::CanFire()
+void USTFUWeaponComponent::OnReloadFinished(USkeletalMeshComponent* MeshComp)
 {
-    return !EquipAnimationIsRun;
+    if (Character->GetMesh() == MeshComp)
+    {
+        ReloadAnimationIsRun = false;
+        UE_LOG(LOG_WEAPON_COMPOONENT, Display, TEXT("OnReloadFinished"));
+    }
 }
 
-bool USTFUWeaponComponent::CanEquip()
+bool USTFUWeaponComponent::CanDoAction()
 {
-    return !EquipAnimationIsRun;
+    return !EquipAnimationIsRun && !ReloadAnimationIsRun;
 }
