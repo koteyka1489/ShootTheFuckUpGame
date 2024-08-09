@@ -131,6 +131,11 @@ void USTFUWeaponComponent::InitAnimation()
             EquipFinishedNotify->OnNotifide.AddUObject(this, &USTFUWeaponComponent::OnEquipFinished);
             UE_LOG(LOG_WEAPON_COMPOONENT, Display, TEXT("BIND EquipFinished"));
         }
+        else
+        {
+            UE_LOG(LOG_WEAPON_COMPOONENT, Error, TEXT("Equip anim notify forgoten to set"));
+            checkNoEntry();
+        }
     }
 
     if (!CurrentReloadAnimMontage) return;
@@ -145,6 +150,11 @@ void USTFUWeaponComponent::InitAnimation()
             {
                 ReloadFinishedNotify->OnNotifide.AddUObject(this, &USTFUWeaponComponent::OnReloadFinished);
                 UE_LOG(LOG_WEAPON_COMPOONENT, Display, TEXT("BIND ReloadFinished"));
+            }
+            else
+            {
+                UE_LOG(LOG_WEAPON_COMPOONENT, Error, TEXT("Reload anim notify forgoten to set"));
+                checkNoEntry();
             }
         }
     }

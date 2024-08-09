@@ -24,7 +24,8 @@ void ASTFUBaseWeapon::BeginPlay()
     Super::BeginPlay();
 
     check(SkeletalMeshComponent);
-
+    checkf(DefaultAmmo.Bullets > 0, TEXT("Bullets couldnt less then 0"));
+    checkf(DefaultAmmo.Clips > 0, TEXT("Clips couldnt less then 0"));
     CurrentAmmo = DefaultAmmo;
 }
 
