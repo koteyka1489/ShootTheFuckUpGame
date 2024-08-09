@@ -50,6 +50,7 @@ public:
 
     FOnClipEmpty OnClipEmpty;
     void ChangeClip();
+    bool IsNoClips();
 
 protected:
     virtual void BeginPlay() override;
@@ -65,7 +66,7 @@ protected:
 
     bool IsClipEmpty();
     bool IsAmmoEmpty();
-    bool IsNoClips();
+    
     void BulletsReduction();
     
 

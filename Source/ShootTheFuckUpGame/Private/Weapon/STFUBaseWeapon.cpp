@@ -98,7 +98,7 @@ void ASTFUBaseWeapon::BulletsReduction()
         CurrentAmmo.Bullets--;
         UE_LOG(LogBaseWeapon, Warning, TEXT("Bullets in Clip %i"), CurrentAmmo.Bullets);
     }
-    else if (!IsNoClips())
+    else
     {
         UE_LOG(LogBaseWeapon, Warning, TEXT("Clip is Empty"));
         OnClipEmpty.Broadcast();

@@ -14,9 +14,12 @@ void ASTFULauncherWeapon::StartFire()
 
 void ASTFULauncherWeapon::MakeShot() 
 {
-    if (!GetWorld() || IsAmmoEmpty()) return;
-
-
+    if (!GetWorld() || IsClipEmpty())
+    {
+        StopFire();
+        BulletsReduction();
+        return;
+    }
 
     FVector TraceStart;
     FVector TraceEnd;

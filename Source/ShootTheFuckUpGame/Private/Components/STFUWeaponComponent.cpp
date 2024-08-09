@@ -40,9 +40,13 @@ void USTFUWeaponComponent::OnClipEmpty()
 void USTFUWeaponComponent::Reload()
 {
     CurrentWeapon->StopFire();
+    
+    if (!CurrentWeapon->IsNoClips())
+    {
+        PlayAnimMontage(CurrentReloadAnimMontage);
+        ReloadAnimationIsRun = true;
+    }
     CurrentWeapon->ChangeClip();
-    PlayAnimMontage(CurrentReloadAnimMontage);
-    ReloadAnimationIsRun = true;
 }
 
 void USTFUWeaponComponent::BeginPlay()
