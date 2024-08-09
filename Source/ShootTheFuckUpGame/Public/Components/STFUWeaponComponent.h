@@ -84,4 +84,6 @@ private:
 
     bool CanDoAction();
 
+    void OnClipEmpty();
+
 };

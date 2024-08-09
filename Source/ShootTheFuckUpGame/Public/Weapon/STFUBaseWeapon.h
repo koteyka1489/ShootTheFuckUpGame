@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "STFUBaseWeapon.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnClipEmpty);
+
+
 USTRUCT(BlueprintType)
 struct FAmmoData
 {
@@ -45,6 +48,9 @@ public:
     virtual void StartFire();
     virtual void StopFire();
 
+    FOnClipEmpty OnClipEmpty;
+    void ChangeClip();
+
 protected:
     virtual void BeginPlay() override;
     virtual void MakeShot();
@@ -57,11 +63,11 @@ protected:
     FTransform GetSocketTranform();
     FVector GetSocketWorldLocation();
 
-    bool IsBulletsEmpty();
+    bool IsClipEmpty();
     bool IsAmmoEmpty();
-    bool IsClipsEmpty();
+    bool IsNoClips();
     void BulletsReduction();
-    void Reloading();
+    
 
 private:
     FAmmoData CurrentAmmo;

@@ -76,37 +76,46 @@ FVector ASTFUBaseWeapon::GetSocketWorldLocation()
     return GetSocketTranform().GetLocation();
 }
 
-bool ASTFUBaseWeapon::IsBulletsEmpty()
+bool ASTFUBaseWeapon::IsClipEmpty()
 {
     return CurrentAmmo.Bullets == 0;
 }
 
-bool ASTFUBaseWeapon::IsClipsEmpty()
+bool ASTFUBaseWeapon::IsNoClips()
 {
     return CurrentAmmo.Clips == 0;
 }
 
 bool ASTFUBaseWeapon::IsAmmoEmpty()
 {
-    return IsBulletsEmpty() && IsClipsEmpty() && !CurrentAmmo.Infinite;
+    return IsClipEmpty() && IsNoClips() && !CurrentAmmo.Infinite;
 }
 
 void ASTFUBaseWeapon::BulletsReduction()
 {
-    if (!IsBulletsEmpty())
+    if (!IsClipEmpty())
     {
         CurrentAmmo.Bullets--;
-        UE_LOG(LogBaseWeapon, Display, TEXT("Bullets reduction - %i"), CurrentAmmo.Bullets);
+        UE_LOG(LogBaseWeapon, Warning, TEXT("Bullets in Clip %i"), CurrentAmmo.Bullets);
     }
-    else if (!IsClipsEmpty() || CurrentAmmo.Infinite)
+    else if (!IsNoClips())
     {
-        Reloading();
+        UE_LOG(LogBaseWeapon, Warning, TEXT("Clip is Empty"));
+        OnClipEmpty.Broadcast();
     }
 }
 
-void ASTFUBaseWeapon::Reloading()
+void ASTFUBaseWeapon::ChangeClip()
 {
-    CurrentAmmo.Clips--;
-    CurrentAmmo.Bullets = DefaultAmmo.Bullets;
-    UE_LOG(LogBaseWeapon, Display, TEXT("Reloading - %i"), CurrentAmmo.Clips);
+    if (!IsNoClips())
+    {
+        CurrentAmmo.Clips--;
+        CurrentAmmo.Bullets = DefaultAmmo.Bullets;
+        UE_LOG(LogBaseWeapon, Warning, TEXT("Reload current Bullets - %i"), CurrentAmmo.Bullets);
+        UE_LOG(LogBaseWeapon, Warning, TEXT("Reload current Clips - %i"), CurrentAmmo.Clips);
+    }
+    else
+    {
+        UE_LOG(LogBaseWeapon, Warning, TEXT("No Clips"));
+    }
 }

@@ -25,27 +25,30 @@ void USTFUWeaponComponent::StopFire()
     CurrentWeapon->StopFire();
 }
 
-
 void USTFUWeaponComponent::NextWeapon()
 {
     CurrentWeapon->StopFire();
     CurrentWeaponIndex = (CurrentWeaponIndex + 1) % Weapons.Num();
     EquipWeapon(CurrentWeaponIndex);
-    
+}
+
+void USTFUWeaponComponent::OnClipEmpty() 
+{
+    Reload();
 }
 
 void USTFUWeaponComponent::Reload()
 {
     CurrentWeapon->StopFire();
+    CurrentWeapon->ChangeClip();
     PlayAnimMontage(CurrentReloadAnimMontage);
     ReloadAnimationIsRun = true;
-    
 }
 
 void USTFUWeaponComponent::BeginPlay()
 {
     Super::BeginPlay();
-    
+
     Character = Cast<ACharacter>(GetOwner());
     SpawnWeapons();
     EquipWeapon(CurrentWeaponIndex);
@@ -74,6 +77,7 @@ void USTFUWeaponComponent::SpawnWeapons()
         auto ReloadAnimMontage = WData.ReloadAnimMontage;
         if (!Weapon) continue;
 
+        Weapon->OnClipEmpty.AddUObject(this, &USTFUWeaponComponent::OnClipEmpty);
         Weapon->SetOwner(Character);
         Weapons.Add(Weapon);
         ReloadAnimMontages.Add(ReloadAnimMontage);
@@ -140,7 +144,6 @@ void USTFUWeaponComponent::InitAnimation()
             }
         }
     }
-    
 }
 
 void USTFUWeaponComponent::OnEquipFinished(USkeletalMeshComponent* MeshComp)
