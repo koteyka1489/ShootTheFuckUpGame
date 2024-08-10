@@ -27,3 +27,32 @@ bool USTFUPlayerHUDWidget::GetWeaponUIData(FWeaponUIData& UIData) const
 
     return WeaponComponent->GetWeaponUIData(UIData);
 }
+
+bool USTFUPlayerHUDWidget::GetCurrenAmmo(FAmmoData& AmmoData) const
+{
+    const auto Player = GetOwningPlayerPawn();
+    if (!Player) return false;
+
+    const auto Component       = Player->GetComponentByClass(USTFUWeaponComponent::StaticClass());
+    const auto WeaponComponent = Cast<USTFUWeaponComponent>(Component);
+    if (!WeaponComponent) return false;
+
+    return WeaponComponent->GetCurrenAmmo(AmmoData);
+}
+
+FString USTFUPlayerHUDWidget::GetCurrentAmmoText(FAmmoData& AmmoData)
+{
+    GetCurrenAmmo(AmmoData);
+
+    if (AmmoData.Infinite)
+    {
+        return FString::Printf(TEXT(" %i / X "), AmmoData.Bullets);
+    }
+    else
+    {
+        return FString::Printf(TEXT(" %i / %i"), AmmoData.Bullets, AmmoData.Clips);
+    }
+    
+}
+
+

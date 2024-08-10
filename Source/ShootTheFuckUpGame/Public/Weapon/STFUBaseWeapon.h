@@ -54,6 +54,8 @@ public:
 
     FWeaponUIData GetUIData() const { return UIData; }
 
+    FAmmoData GetCurrentAmmo() const { return CurrentAmmo; }
+
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
     USkeletalMeshComponent* SkeletalMeshComponent;

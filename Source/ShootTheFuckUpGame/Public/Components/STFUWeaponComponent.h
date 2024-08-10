@@ -9,6 +9,7 @@
 
 class ASTFUBaseWeapon;
 struct FWeaponUIData;
+struct FAmmoData;
 
 USTRUCT(BlueprintType)
 struct FWeaponData
@@ -49,7 +50,7 @@ public:
     void Reload();
 
     bool GetWeaponUIData(FWeaponUIData& UIData) const;
-
+    bool GetCurrenAmmo(FAmmoData& AmmoData) const;
 
 protected:
     virtual void BeginPlay() override;
