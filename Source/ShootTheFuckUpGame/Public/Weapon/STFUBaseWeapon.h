@@ -8,6 +8,18 @@
 
 DECLARE_MULTICAST_DELEGATE(FOnClipEmpty);
 
+USTRUCT(BlueprintType)
+struct FWeaponUIData
+{
+    GENERATED_USTRUCT_BODY()
+
+public:
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    UTexture2D* MainIcon;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    UTexture2D* CrossHairIcon;
+};
 
 USTRUCT(BlueprintType)
 struct FAmmoData
@@ -33,6 +45,16 @@ class SHOOTTHEFUCKUPGAME_API ASTFUBaseWeapon : public AActor
 public:
     ASTFUBaseWeapon();
 
+    virtual void StartFire();
+    virtual void StopFire();
+
+    FOnClipEmpty OnClipEmpty;
+    void ChangeClip();
+    bool IsNoClips();
+
+    FWeaponUIData GetUIData() const { return UIData; }
+
+protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
     USkeletalMeshComponent* SkeletalMeshComponent;
 
@@ -45,14 +67,9 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
     FAmmoData DefaultAmmo{30, 5, false};
 
-    virtual void StartFire();
-    virtual void StopFire();
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+    FWeaponUIData UIData;
 
-    FOnClipEmpty OnClipEmpty;
-    void ChangeClip();
-    bool IsNoClips();
-
-protected:
     virtual void BeginPlay() override;
     virtual void MakeShot();
     virtual void GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd);
@@ -66,9 +83,8 @@ protected:
 
     bool IsClipEmpty();
     bool IsAmmoEmpty();
-    
+
     void BulletsReduction();
-    
 
 private:
     FAmmoData CurrentAmmo;

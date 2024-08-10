@@ -8,6 +8,7 @@
 #include "STFUWeaponComponent.generated.h"
 
 class ASTFUBaseWeapon;
+struct FWeaponUIData;
 
 USTRUCT(BlueprintType)
 struct FWeaponData
@@ -47,6 +48,9 @@ public:
     void NextWeapon();
     void Reload();
 
+    bool GetWeaponUIData(FWeaponUIData& UIData) const;
+
+
 protected:
     virtual void BeginPlay() override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -85,5 +89,4 @@ private:
     bool CanDoAction();
 
     void OnClipEmpty();
-
 };

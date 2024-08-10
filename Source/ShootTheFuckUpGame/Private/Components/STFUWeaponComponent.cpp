@@ -32,7 +32,7 @@ void USTFUWeaponComponent::NextWeapon()
     EquipWeapon(CurrentWeaponIndex);
 }
 
-void USTFUWeaponComponent::OnClipEmpty() 
+void USTFUWeaponComponent::OnClipEmpty()
 {
     Reload();
 }
@@ -40,13 +40,23 @@ void USTFUWeaponComponent::OnClipEmpty()
 void USTFUWeaponComponent::Reload()
 {
     CurrentWeapon->StopFire();
-    
+
     if (!CurrentWeapon->IsNoClips())
     {
         PlayAnimMontage(CurrentReloadAnimMontage);
         ReloadAnimationIsRun = true;
     }
     CurrentWeapon->ChangeClip();
+}
+
+bool USTFUWeaponComponent::GetWeaponUIData(FWeaponUIData& UIData) const
+{
+    if (CurrentWeapon)
+    {
+        UIData = CurrentWeapon->GetUIData();
+        return true;
+    }
+    return false;
 }
 
 void USTFUWeaponComponent::BeginPlay()
