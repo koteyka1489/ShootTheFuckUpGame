@@ -24,11 +24,15 @@ public:
     UFUNCTION(BlueprintCallable)
     bool IsDead() { return Health <= 0.0f; }
 
+    UFUNCTION(BlueprintCallable)
+    float GetHealthPercent();
+
     FOnDeath OnDeath;
     FOnHealthChanged OnHealthChanged;
 
+    
 protected:
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (ClampMin = "0.0", ClampMax = "1000.0"));
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (ClampMin = "1.0", ClampMax = "1000.0"));
     float MaxHealth = 100.0f;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal")

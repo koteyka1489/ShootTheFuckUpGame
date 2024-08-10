@@ -10,6 +10,12 @@ USTFUHealthComponent::USTFUHealthComponent()
     PrimaryComponentTick.bCanEverTick = true;
 }
 
+float USTFUHealthComponent::GetHealthPercent()
+{
+    check(MaxHealth > 0);
+    return Health / MaxHealth;
+}
+
 void USTFUHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
