@@ -2,12 +2,24 @@
 
 #include "UI/STFUGameHUD.h"
 #include "Engine\Canvas.h"
+#include "Blueprint/UserWidget.h"
 
 void ASTFUGameHUD::DrawHUD()
 {
     Super::DrawHUD();
 
     DrawCrossHair();
+}
+
+void ASTFUGameHUD::BeginPlay() 
+{
+    Super::BeginPlay();
+
+    auto PlayerWidget = CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass);
+    if (PlayerWidget)
+    {
+        PlayerWidget->AddToViewport();
+    }
 }
 
 void ASTFUGameHUD::DrawCrossHair()
