@@ -7,11 +7,13 @@
 #include "STFUAmmoPickUp.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class SHOOTTHEFUCKUPGAME_API ASTFUAmmoPickUp : public ASTFUBasePickUp
 {
-	GENERATED_BODY()
-	
+    GENERATED_BODY()
+
+protected:
+    virtual bool GivePickUpTo(APawn* Pawn) override;
 };

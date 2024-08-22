@@ -11,22 +11,28 @@ class USphereComponent;
 UCLASS()
 class SHOOTTHEFUCKUPGAME_API ASTFUBasePickUp : public AActor
 {
-	GENERATED_BODY()
-	
-public:	
-	ASTFUBasePickUp();
+    GENERATED_BODY()
+
+public:
+    ASTFUBasePickUp();
 
 protected:
+    virtual void BeginPlay() override;
 
-	virtual void BeginPlay() override;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Collision")
+    UPROPERTY(EditDefaultsOnly, Category = "Collision")
     USphereComponent* CollisionComponent;
 
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+    UPROPERTY(EditDefaultsOnly, Category = "Collision")
+    float RespawnTime = 5.0f;
 
-public:	
+    virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+    virtual bool GivePickUpTo(APawn* Pawn);
 
-	virtual void Tick(float DeltaTime) override;
+public:
+    virtual void Tick(float DeltaTime) override;
+
+private:
+    void PickupWasTaken();
+    void Respawn();
 
 };

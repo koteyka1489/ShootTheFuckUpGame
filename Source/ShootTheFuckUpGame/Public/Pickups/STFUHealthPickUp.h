@@ -13,5 +13,7 @@ UCLASS()
 class SHOOTTHEFUCKUPGAME_API ASTFUHealthPickUp : public ASTFUBasePickUp
 {
 	GENERATED_BODY()
-	
+protected:
+    virtual bool GivePickUpTo(APawn* Pawn) override;
+
 };
