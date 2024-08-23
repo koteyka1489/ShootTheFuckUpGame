@@ -34,5 +34,9 @@ public:
 private:
     void PickupWasTaken();
     void Respawn();
+    void GenerateRoration();
 
+    float RotationPitch = 0.0f;
+    float RotationYaw = 0.0f;
+    float RotationRoll = 0.0f;
 };

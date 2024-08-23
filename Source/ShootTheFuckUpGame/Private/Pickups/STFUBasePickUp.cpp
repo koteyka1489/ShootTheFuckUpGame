@@ -21,6 +21,7 @@ void ASTFUBasePickUp::BeginPlay()
 {
     Super::BeginPlay();
     check(CollisionComponent);
+    GenerateRoration();
 }
 
 void ASTFUBasePickUp::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -42,6 +43,8 @@ bool ASTFUBasePickUp::GivePickUpTo(APawn* Pawn)
 void ASTFUBasePickUp::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+    AddActorLocalRotation(FRotator(RotationPitch, RotationYaw, RotationRoll));
 }
 
 void ASTFUBasePickUp::PickupWasTaken()
@@ -57,4 +60,13 @@ void ASTFUBasePickUp::Respawn()
 {
     CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
     GetRootComponent()->SetVisibility(true, true);
+    GenerateRoration();
+}
+
+void ASTFUBasePickUp::GenerateRoration() 
+{
+    float Direction = FMath::RandBool() ? 1.0f : -1.0f;
+    RotationPitch   = FMath::RandRange(1.0f, 2.0f);
+    RotationYaw     = FMath::RandRange(1.0f, 2.0f);
+    RotationRoll    = FMath::RandRange(1.0f, 2.0f);
 }
