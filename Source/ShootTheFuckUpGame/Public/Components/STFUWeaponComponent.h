@@ -49,10 +49,11 @@ public:
     void NextWeapon();
     void Reload();
 
+
     bool GetWeaponUIData(FWeaponUIData& UIData) const;
     bool GetCurrenAmmo(FAmmoData& AmmoData) const;
 
-    void GivePickUpTo();
+    bool GivePickUpTo();
 
 protected:
     virtual void BeginPlay() override;

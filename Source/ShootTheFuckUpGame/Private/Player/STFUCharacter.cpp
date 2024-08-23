@@ -94,6 +94,8 @@ float ASTFUCharacter::GetDotProductRightVecAndVelocityVec() const
 
 bool ASTFUCharacter::GivePickUpTo(ASTFUBasePickUp* PickUp)
 {
+    if (HealthComponent->IsDead()) return false;
+
     if (Cast<ASTFUHealthPickUp>(PickUp))
     {
         HealthComponent->GivePickUpTo();

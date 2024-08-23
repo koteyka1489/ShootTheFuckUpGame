@@ -69,8 +69,18 @@ bool USTFUWeaponComponent::GetCurrenAmmo(FAmmoData& AmmoData) const
     return false;
 }
 
-void USTFUWeaponComponent::GivePickUpTo() 
+bool USTFUWeaponComponent::GivePickUpTo() 
 {
+    if (CurrentWeapon->IsAmmoFull())
+    {
+        return true;
+    }
+    else
+    {
+        CurrentWeapon->AddClips();
+        Reload();
+        return true;
+    }
 
 }
 

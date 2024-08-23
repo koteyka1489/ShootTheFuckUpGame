@@ -51,6 +51,11 @@ public:
     FOnClipEmpty OnClipEmpty;
     void ChangeClip();
     bool IsNoClips();
+    bool IsClipEmpty();
+    bool IsAmmoEmpty();
+    bool IsAmmoFull();
+    void AddClips();
+
 
     FWeaponUIData GetUIData() const { return UIData; }
 
@@ -83,8 +88,7 @@ protected:
     FTransform GetSocketTranform();
     FVector GetSocketWorldLocation();
 
-    bool IsClipEmpty();
-    bool IsAmmoEmpty();
+
 
     void BulletsReduction();
 

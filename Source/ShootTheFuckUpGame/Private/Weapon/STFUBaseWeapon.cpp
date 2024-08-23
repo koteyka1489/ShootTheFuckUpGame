@@ -92,6 +92,16 @@ bool ASTFUBaseWeapon::IsAmmoEmpty()
     return IsClipEmpty() && IsNoClips() && !CurrentAmmo.Infinite;
 }
 
+bool ASTFUBaseWeapon::IsAmmoFull()
+{
+    return CurrentAmmo.Bullets == DefaultAmmo.Bullets && CurrentAmmo.Clips == DefaultAmmo.Clips;
+}
+
+void ASTFUBaseWeapon::AddClips() 
+{
+    CurrentAmmo.Clips = DefaultAmmo.Clips + 1;
+}
+
 void ASTFUBaseWeapon::BulletsReduction()
 {
     if (!IsClipEmpty())
