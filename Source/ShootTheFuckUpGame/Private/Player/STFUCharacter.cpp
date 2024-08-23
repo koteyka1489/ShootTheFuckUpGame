@@ -10,6 +10,9 @@
 #include "GameFramework/Controller.h"
 #include "Components/STFUWeaponComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Pickups/STFUBasePickUp.h"
+#include "Pickups/STFUHealthPickUp.h"
+#include "Pickups/STFUAmmoPickUp.h"
 
 DEFINE_LOG_CATEGORY_STATIC(BaseCharacterLog, All, All)
 
@@ -33,7 +36,6 @@ ASTFUCharacter::ASTFUCharacter(const FObjectInitializer& ObjInit)
     TextHealthComponent->bOwnerNoSee = true;
 
     WeaponComponent = CreateDefaultSubobject<USTFUWeaponComponent>("WeaponComponent");
-
 }
 
 // Called when the game starts or when spawned
@@ -90,6 +92,23 @@ float ASTFUCharacter::GetDotProductRightVecAndVelocityVec() const
     return FVector::DotProduct(RightVec, VelocityVec);
 }
 
+bool ASTFUCharacter::GivePickUpTo(ASTFUBasePickUp* PickUp)
+{
+    if (Cast<ASTFUHealthPickUp>(PickUp))
+    {
+        HealthComponent->GivePickUpTo();
+        return true;
+    }
+    else if (Cast<ASTFUAmmoPickUp>(PickUp))
+    {
+        WeaponComponent->GivePickUpTo();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
 void ASTFUCharacter::MoveForward(float Amount)
 {

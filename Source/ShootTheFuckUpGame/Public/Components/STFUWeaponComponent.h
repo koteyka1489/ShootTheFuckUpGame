@@ -52,6 +52,8 @@ public:
     bool GetWeaponUIData(FWeaponUIData& UIData) const;
     bool GetCurrenAmmo(FAmmoData& AmmoData) const;
 
+    void GivePickUpTo();
+
 protected:
     virtual void BeginPlay() override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

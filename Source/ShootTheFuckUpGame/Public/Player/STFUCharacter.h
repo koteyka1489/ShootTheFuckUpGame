@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Pickups\STFUBasePickUp.h"
 #include "STFUCharacter.generated.h"
 
 class UCameraComponent;
@@ -33,6 +34,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "State")
     float GetDotProductRightVecAndVelocityVec() const;
 
+    bool GivePickUpTo(ASTFUBasePickUp* PickUp);
+
+   
 
 protected:
     virtual void BeginPlay() override;

@@ -2,9 +2,18 @@
 
 
 #include "Pickups/STFUHealthPickUp.h"
+#include "Player\STFUCharacter.h"
 
 bool ASTFUHealthPickUp::GivePickUpTo(APawn* Pawn)
 {
-    UE_LOG(LogTemp, Warning, TEXT("HEALTH PICKUP"));
-    return true;
+    auto Player = Cast<ASTFUCharacter>(Pawn);
+    if (Player)
+    {
+        Player->GivePickUpTo(this);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

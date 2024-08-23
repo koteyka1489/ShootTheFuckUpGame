@@ -16,6 +16,15 @@ float USTFUHealthComponent::GetHealthPercent()
     return Health / MaxHealth;
 }
 
+void USTFUHealthComponent::GivePickUpTo() 
+{
+    if (!IsDead() && Health < MaxHealth)
+    {
+        Health = MaxHealth;
+    }
+
+}
+
 void USTFUHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);

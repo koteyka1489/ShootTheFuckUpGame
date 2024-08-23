@@ -69,6 +69,11 @@ bool USTFUWeaponComponent::GetCurrenAmmo(FAmmoData& AmmoData) const
     return false;
 }
 
+void USTFUWeaponComponent::GivePickUpTo() 
+{
+
+}
+
 void USTFUWeaponComponent::BeginPlay()
 {
     Super::BeginPlay();

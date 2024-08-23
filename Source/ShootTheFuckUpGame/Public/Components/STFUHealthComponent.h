@@ -30,6 +30,7 @@ public:
     FOnDeath OnDeath;
     FOnHealthChanged OnHealthChanged;
 
+    void GivePickUpTo();
     
 protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (ClampMin = "1.0", ClampMax = "1000.0"));
