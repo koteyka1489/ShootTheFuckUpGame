@@ -36,7 +36,7 @@ public:
 
     bool GivePickUpTo(ASTFUBasePickUp* PickUp);
 
-   
+    bool IsAlive();
 
 protected:
     virtual void BeginPlay() override;

@@ -112,6 +112,11 @@ bool ASTFUCharacter::GivePickUpTo(ASTFUBasePickUp* PickUp)
     }
 }
 
+bool ASTFUCharacter::IsAlive()
+{
+    return !HealthComponent->IsDead();
+}
+
 void ASTFUCharacter::MoveForward(float Amount)
 {
     IsMoveForward = Amount > 0.f;
