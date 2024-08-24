@@ -26,13 +26,13 @@ public:
     float TimeBetwenShots = 0.1f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
-    float Recoil = 30.0f;
+    float Recoil = 10.0f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
-    float RecoilStep = 30.0f;
+    float RecoilStep = 10.0f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
-    float XRecoil = 40.0f;
+    float XRecoil = 10.0f;
 
 public:
     ASTFURiffleWeapon();

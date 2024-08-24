@@ -51,9 +51,21 @@ APlayerController* ASTFUBaseWeapon::GetController()
 
 void ASTFUBaseWeapon::GetTraceStartAndEnd(FVector& TraceStart, FVector& TraceEnd)
 {
+    const auto Character = Cast<ACharacter>(GetOwner());
+    if (!Character) return;
     FVector ViewLocation;
     FRotator ViewRotation;
-    GetController()->GetPlayerViewPoint(ViewLocation, ViewRotation);
+    if (Character->IsPlayerControlled())
+    {
+        GetController()->GetPlayerViewPoint(ViewLocation, ViewRotation);
+    }
+    else
+    {
+        ViewLocation = GetSocketWorldLocation();
+        ViewRotation = SkeletalMeshComponent->GetSocketRotation(MuzzleSocketName);
+    }
+    
+    
 
     TraceStart                   = ViewLocation;
     const FVector ShootDirection = ViewRotation.Vector();

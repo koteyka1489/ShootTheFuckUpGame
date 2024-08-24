@@ -27,6 +27,7 @@ AActor* USTFUAIPerceptionComponent::GetClosestEnemy()
     for (const auto VisibleActor : VisibleActors)
     {
         const auto Character = Cast<ASTFUCharacter>(VisibleActor);
+        if (!Character) return nullptr;
         if (Character->IsAlive())
         {
             FVector VecToActor = VisibleActor->GetActorLocation() - AiPawn->GetActorLocation();
