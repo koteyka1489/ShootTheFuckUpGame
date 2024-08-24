@@ -3,8 +3,8 @@
 
 #include "AI/Tasks/STFUNextLocationTask.h"
 #include "BehaviorTree\BlackBoardComponent.h"
-#include "NavigationSystem.h"
 #include "AIController.h"
+#include "NavigationSystem.h"
 
 USTFUNextLocationTask::USTFUNextLocationTask() 
 {
@@ -24,7 +24,18 @@ EBTNodeResult::Type USTFUNextLocationTask::ExecuteTask(UBehaviorTreeComponent& O
     if (!NavSys) return EBTNodeResult::Failed;
 
     FNavLocation NavLocation;
-    bool NavResult = NavSys->GetRandomReachablePointInRadius(Pawn->GetActorLocation(), Radius, NavLocation);
+
+    FVector Location = Pawn->GetActorLocation();
+    if (!SelfCenter)
+    {
+        auto CenterActor = Cast<AActor>(BlackBoard->GetValueAsObject(CenterActorKey.SelectedKeyName));
+        if (!CenterActor) return EBTNodeResult::Failed;
+
+        Location = CenterActor->GetActorLocation();
+       
+    }
+
+    bool NavResult = NavSys->GetRandomReachablePointInRadius(Location, Radius, NavLocation);
     if (!NavResult) return EBTNodeResult::Failed;
 
     BlackBoard->SetValueAsVector(AimLocationKey.SelectedKeyName, NavLocation.Location);

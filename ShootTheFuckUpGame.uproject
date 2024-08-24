@@ -26,6 +26,18 @@
 		{
 			"Name": "EnhancedInput",
 			"Enabled": false
+		},
+		{
+			"Name": "GameplayStateTree",
+			"Enabled": true
+		},
+		{
+			"Name": "StateTree",
+			"Enabled": true
+		},
+		{
+			"Name": "StateGraph",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [

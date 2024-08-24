@@ -16,6 +16,7 @@ class SHOOTTHEFUCKUPGAME_API ASTFUAIController : public AAIController
 
 public:
     ASTFUAIController();
+    USTFUAIPerceptionComponent* GetPerceptionComponent() { return AIPerceptionComponent; }
 
 protected:
     virtual void OnPossess(APawn* InPawn) override;
@@ -23,4 +24,10 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     USTFUAIPerceptionComponent* AIPerceptionComponent;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+    FName FocusOnKeyName = "EnemyActor";
+
+    private:
+    AActor* GetFocusOnActor() const;
 };

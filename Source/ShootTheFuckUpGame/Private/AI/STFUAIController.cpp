@@ -1,10 +1,10 @@
 // Shoot The Fuck Up Game. All Rights reserved!!!
 
-
 #include "AI/STFUAIController.h"
 #include "AI/STFUAICharacter.h"
+#include "BehaviorTree\BlackBoardComponent.h"
 
-ASTFUAIController::ASTFUAIController() 
+ASTFUAIController::ASTFUAIController()
 {
     AIPerceptionComponent = CreateDefaultSubobject<USTFUAIPerceptionComponent>("AIPerceptionComponent");
     SetPerceptionComponent(*AIPerceptionComponent);
@@ -19,14 +19,18 @@ void ASTFUAIController::OnPossess(APawn* InPawn)
     {
         RunBehaviorTree(STFUCharacter->BehaviorTreeAsset);
     }
-
 }
 
-void ASTFUAIController::Tick(float DeltaTime) 
+void ASTFUAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
-    const auto AimActor = AIPerceptionComponent->GetClosestEnemy();
-    SetFocus(AimActor);
+    SetFocus(GetFocusOnActor());
+}
 
+AActor* ASTFUAIController::GetFocusOnActor() const
+{
+    if (!GetBlackboardComponent()) return nullptr;
+
+    return Cast<AActor>(GetBlackboardComponent()->GetValueAsObject(FocusOnKeyName));
 }
