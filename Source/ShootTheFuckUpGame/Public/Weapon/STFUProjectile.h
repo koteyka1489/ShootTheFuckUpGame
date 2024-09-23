@@ -8,6 +8,7 @@
 
 class USphereComponent;
 class UProjectileMovementComponent;
+class USTFUWeaponFxComponent;
 
 UCLASS()
 class SHOOTTHEFUCKUPGAME_API ASTFUProjectile : public AActor
@@ -17,6 +18,16 @@ class SHOOTTHEFUCKUPGAME_API ASTFUProjectile : public AActor
 public:
     ASTFUProjectile();
 
+
+    void SetShotDirection(const FVector Direction) { ShotDirection = Direction; }
+
+protected:
+    virtual void BeginPlay() override;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VFX")
+    USTFUWeaponFxComponent* WeaponFxComponent;
+
+    
     UPROPERTY(VisibleDefaultsOnly, Category = "Weapon")
     USphereComponent* CollisionComponent;
 
@@ -34,11 +45,6 @@ public:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
     float LifeSeconds = 5.0f;
-
-    void SetShotDirection(const FVector Direction) { ShotDirection = Direction; }
-
-protected:
-    virtual void BeginPlay() override;
 
 private:
     FVector ShotDirection;

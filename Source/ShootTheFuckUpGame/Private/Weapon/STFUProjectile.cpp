@@ -5,6 +5,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet\GameplayStatics.h"
+#include "Weapon\Components\STFUWeaponFxComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LOG_PROJECTILE, All, All);
 
@@ -20,6 +21,8 @@ ASTFUProjectile::ASTFUProjectile()
 
     MovementComponent               = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent");
     MovementComponent->InitialSpeed = 3.0f;
+
+    WeaponFxComponent = CreateDefaultSubobject<USTFUWeaponFxComponent>("UWeaponFxComponent");
 }
 
 void ASTFUProjectile::BeginPlay()
@@ -28,6 +31,7 @@ void ASTFUProjectile::BeginPlay()
 
     check(MovementComponent);
     check(CollisionComponent);
+    check(WeaponFxComponent);
 
     CollisionComponent->IgnoreActorWhenMoving(GetOwner(), true);
     MovementComponent->Velocity = ShotDirection * MovementComponent->InitialSpeed;
@@ -56,7 +60,7 @@ void ASTFUProjectile::OnProjectileHit(
     );
 
     DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 3.0f, false, 1.0f);
-
+    WeaponFxComponent->PlayImpactFX(Hit);
     Destroy();
 }
 

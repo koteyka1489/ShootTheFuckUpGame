@@ -6,17 +6,24 @@
 #include "Weapon/STFUBaseWeapon.h"
 #include "STFURiffleWeapon.generated.h"
 
-/**
- *
- */
+class USTFUWeaponFxComponent;
+
 UCLASS()
 class SHOOTTHEFUCKUPGAME_API ASTFURiffleWeapon : public ASTFUBaseWeapon
 {
     GENERATED_BODY()
 public:
  
+    ASTFURiffleWeapon();
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
+    virtual void StartFire() override;
+    virtual void StopFire() override;
+
+protected:
+    virtual void MakeShot() override;
+    virtual void BeginPlay() override;
+    
+     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
     FColor LineColor = FColor::Red;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
@@ -34,13 +41,8 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooting")
     float XRecoil = 10.0f;
 
-public:
-    ASTFURiffleWeapon();
-    virtual void StartFire() override;
-    virtual void StopFire() override;
-
-protected:
-    virtual void MakeShot() override;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VFX")
+    USTFUWeaponFxComponent* WeaponFxComponent;
 
 private:
     FTimerHandle TimerHandler;

@@ -17,7 +17,8 @@ public class ShootTheFuckUpGame : ModuleRules
             "InputCore",
             "EnhancedInput",
             "GameplayTasks",
-            "NavigationSystem"
+            "NavigationSystem",
+            "Niagara"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });
@@ -29,7 +30,8 @@ public class ShootTheFuckUpGame : ModuleRules
             "ShootTheFuckUpGame/Public/Player",
             "ShootTheFuckUpGame/Public/UI",
             "ShootTheFuckUpGame/Public/Weapon",
-            "ShootTheFuckUpGame/Public/Animations"
+            "ShootTheFuckUpGame/Public/Animations",
+            "ShootTheFuckUpGame/Public/Weapon/Components"
         });
 
         // Uncomment if you are using Slate UI
