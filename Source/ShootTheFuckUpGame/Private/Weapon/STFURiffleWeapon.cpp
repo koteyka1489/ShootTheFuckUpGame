@@ -68,8 +68,8 @@ void ASTFURiffleWeapon::MakeShot()
     }
     else
     {
-        DrawDebugLine(GetWorld(), GetSocketTranform().GetLocation(), TraceEnd, LineColor, false, DebugLineLifeTime, DepthPrioroty,
-            DebugLineThickness);
+        //DrawDebugLine(GetWorld(), GetSocketTranform().GetLocation(), TraceEnd, LineColor, false, DebugLineLifeTime, DepthPrioroty,
+            //DebugLineThickness);
     }
     BulletsReduction();
 }
